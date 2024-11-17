@@ -32,19 +32,19 @@ namespace Domain.Entities
         public string Location { get; set; }
 
         [Required]
-        public UserRol Rol { get; set; }
+        public UserRol Rol { get; set; } = UserRol.Client;
 
         public UserState State { get; set; } = UserState.Active;
 
         public User() { }
 
-        public User(string fullName, string email, string password, string imageUrl,string location)
+        public User(string fullName, string email, string password, string location,UserRol rol)
         {
             FullName = fullName;
             Email = email;
             Password = password;
-            ImageUrl = imageUrl;
             Location = location;
+            Rol = rol;
         }
 
 

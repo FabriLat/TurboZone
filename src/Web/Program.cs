@@ -1,3 +1,5 @@
+using Application.Interfaces;
+using Application.Services;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +15,23 @@ builder.Services.AddSwaggerGen();
 //CONFIGURACION DE ENTITY FRAMEWORK PARA PERSISTENCIA DE DATOS
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
     builder.Configuration["ConnectionStrings:DBConnectionString"]));
+
+
+
+
+
+#region Services
+builder.Services.AddScoped<IClientService,ClientService>();
+
+
+#endregion
+
+
+#region Repositories
+builder.Services.AddScoped<IClientRepository,ClientRepository>();
+#endregion
+
+
 
 var app = builder.Build();
 
