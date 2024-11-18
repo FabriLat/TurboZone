@@ -46,5 +46,21 @@ namespace Application.Services
             return clientsDTO;
         }
 
+
+        public void UpdateClient(UpdateClientDTO updateClientDTO)
+        {
+            Client? clientToModify = _clientRepository.GetById(updateClientDTO.Id);
+
+            if (clientToModify != null)
+            {
+                clientToModify.FullName = updateClientDTO.FullName;
+                clientToModify.Email = updateClientDTO.Email;
+                clientToModify.Password = updateClientDTO.Password;
+                clientToModify.Location = updateClientDTO.Location;
+                _clientRepository.Update(clientToModify);
+            }
+            
+        }
+
     }
 }

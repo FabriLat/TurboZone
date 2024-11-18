@@ -29,5 +29,13 @@ namespace Web.Controllers
             return _clientService.GetAllClients();
         }
 
+
+        [HttpPut("[action]")]
+        public ActionResult UpdateClient([FromBody] UpdateClientDTO updateClientDTO)
+        {
+            _clientService.UpdateClient(updateClientDTO);
+            return Ok();
+        }
+
     }
 }
