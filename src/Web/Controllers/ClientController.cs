@@ -19,7 +19,15 @@ namespace Web.Controllers
         [HttpPost("[action]")]
         public ActionResult CreateClient([FromBody]CreateClientDTO createClientDTO)
         {
-            return Ok(_clientService.CreateNewClient(createClientDTO));
+            try
+            {
+                return Ok(_clientService.CreateNewClient(createClientDTO));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+           
         }
 
 
@@ -33,8 +41,16 @@ namespace Web.Controllers
         [HttpPut("[action]")]
         public ActionResult UpdateClient([FromBody] UpdateClientDTO updateClientDTO)
         {
-            _clientService.UpdateClient(updateClientDTO);
-            return Ok();
+            try
+            {
+                _clientService.UpdateClient(updateClientDTO);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
     }
