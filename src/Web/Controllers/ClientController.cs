@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models.Requests;
 using Application.Models.Responses;
+using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -58,8 +59,18 @@ namespace Web.Controllers
             catch(Exception ex)
             {
                 return BadRequest(ex.Message);
+            } 
+        }
+
+        [HttpDelete("[action]/{id}")]
+        public ActionResult<Client?> DeleteClient([FromRoute] int id)
+        {
+            var deletedClient = _clientService.DeleteClient(id);
+            if (deletedClient != null) 
+            {
+                return Ok();
             }
-            
+            return NotFound();
         }
 
     }

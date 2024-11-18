@@ -2,6 +2,7 @@
 using Application.Models.Requests;
 using Application.Models.Responses;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -57,10 +58,7 @@ namespace Application.Services
                 return clientDTO;
             }
             return null;
-           
-            
         }
-
 
         public void UpdateClient(UpdateClientDTO updateClientDTO)
         {
@@ -75,6 +73,18 @@ namespace Application.Services
                 _clientRepository.Update(clientToModify);
             }
             
+        }
+
+        public Client? DeleteClient(int id)
+        {
+            Client? client = _clientRepository.GetById(id);
+            if (client != null)
+            {
+                client.State = UserState.Inactive;
+                _clientRepository.Update(client);
+                return client;
+            }
+            return null;
         }
 
     }
