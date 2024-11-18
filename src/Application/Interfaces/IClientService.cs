@@ -14,6 +14,7 @@ namespace Application.Interfaces
 
         List<ClientDTO> GetAllClients();
 
+        ClientDTO GetClientById(int id);
 
         void UpdateClient(UpdateClientDTO ClientDto);
 

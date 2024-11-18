@@ -2,6 +2,7 @@
 using Application.Models.Requests;
 using Application.Models.Responses;
 using Domain.Entities;
+using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,20 @@ namespace Application.Services
                clientsDTO.Add(clientDTO);
             }
             return clientsDTO;
+        }
+
+
+        public ClientDTO? GetClientById(int id)
+        {
+            Client? client = _clientRepository.GetById(id);
+            if (client != null)
+            {
+                ClientDTO clientDTO = ClientDTO.Create(client);
+                return clientDTO;
+            }
+            return null;
+           
+            
         }
 
 

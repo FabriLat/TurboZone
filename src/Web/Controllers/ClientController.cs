@@ -27,7 +27,17 @@ namespace Web.Controllers
             {
                 return BadRequest(ex.Message);
             }
-           
+        }
+
+        [HttpGet("[action]/{id}")]
+        public ActionResult<ClientDTO?> GetClientById([FromRoute]int id)
+        {
+            ClientDTO? client = _clientService.GetClientById(id);
+            if (client != null)
+            {
+                return client;
+            }
+            return NotFound();
         }
 
 
@@ -36,7 +46,6 @@ namespace Web.Controllers
         {
             return _clientService.GetAllClients();
         }
-
 
         [HttpPut("[action]")]
         public ActionResult UpdateClient([FromBody] UpdateClientDTO updateClientDTO)
