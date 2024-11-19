@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using Domain.Enums;
+using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -38,6 +39,8 @@ namespace Domain.Entities
 
         [Required]
         public int SellerId { get; set; } //FK para saber quien es el cliente que lo vende
+
+        public VehicleState State { get; set; } = VehicleState.Active;
 
         public Vehicle() { }
 
