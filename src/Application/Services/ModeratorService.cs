@@ -68,7 +68,8 @@ namespace Application.Services
 
             if (moderatorToDelete != null)
             {
-                _moderatorRepository.Delete(moderatorToDelete);
+                moderatorToDelete.State = UserState.Inactive;
+                _moderatorRepository.Update(moderatorToDelete);
             }
             
 
