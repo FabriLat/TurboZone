@@ -22,13 +22,13 @@ builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
 
 #region Services
 builder.Services.AddScoped<IClientService,ClientService>();
-
-
+builder.Services.AddScoped<IModeratorService,ModeratorService>();
 #endregion
 
 
 #region Repositories
 builder.Services.AddScoped<IClientRepository,ClientRepository>();
+builder.Services.AddScoped<IModeratorRepository,ModeratorRepository>();
 #endregion
 
 
