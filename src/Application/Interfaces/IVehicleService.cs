@@ -15,7 +15,7 @@ namespace Application.Interfaces
 
        VehicleDTO GetVehicleById(int id);
 
-        void CreateVehicle(Vehicle vehicle);
+        void CreateVehicle(CreateVehicleDTO vehicle, int userId);
         
        void UpdateVehicle(UpdateVehicleDTO vehicle);
 

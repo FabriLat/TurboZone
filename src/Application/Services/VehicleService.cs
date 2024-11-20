@@ -2,10 +2,12 @@
 using Application.Models.Requests;
 using Application.Models.Responses;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,9 +21,19 @@ namespace Application.Services
             _vehicleRepository = vehicleRepository;
         }
 
-        public void CreateVehicle(Vehicle vehicle)
+        public void CreateVehicle(CreateVehicleDTO vehicle, int userId)
         {
-            throw new NotImplementedException();
+            Vehicle newVehicle = new Vehicle();
+            newVehicle.Brand=vehicle.Brand;
+            newVehicle.Model=vehicle.Model;
+            newVehicle.Year=vehicle.Year;
+            newVehicle.Color=vehicle.Color;
+            newVehicle.Transmission=vehicle.Transmission;
+            newVehicle.MaxSpeed=vehicle.MaxSpeed;
+            newVehicle.Price=vehicle.Price;
+            newVehicle.SellerId = userId;
+            newVehicle.State = VehicleState.Pending;
+            _vehicleRepository.Add(newVehicle);
         }
 
         public void DeleteVehicle(int id)
