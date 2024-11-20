@@ -1,5 +1,6 @@
 using Application.Interfaces;
 using Application.Services;
+using Domain.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,12 +24,14 @@ builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
 #region Services
 builder.Services.AddScoped<IClientService,ClientService>();
 builder.Services.AddScoped<IModeratorService,ModeratorService>();
+builder.Services.AddScoped<IVehicleService,VehicleService>();
 #endregion
 
 
 #region Repositories
 builder.Services.AddScoped<IClientRepository,ClientRepository>();
 builder.Services.AddScoped<IModeratorRepository,ModeratorRepository>();
+builder.Services.AddScoped<IVehicleRepository,VehicleRepository>();
 #endregion
 
 
