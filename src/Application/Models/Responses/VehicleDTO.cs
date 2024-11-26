@@ -10,6 +10,8 @@ namespace Application.Models.Responses
     {
         public int Id { get; set; }
 
+        public int SellerId { get; set; }
+
         public string Brand { get; set; }
 
         public string Model { get; set; }
@@ -20,7 +22,7 @@ namespace Application.Models.Responses
 
         public string Transmission { get; set; }
 
-        public string MaxSpeed { get; set; }
+        public decimal MaxSpeed { get; set; }
 
         public decimal Price { get; set; }
     }

@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Models.Requests;
+using Application.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,11 @@ namespace Web.Controllers
             return Ok();
         }
 
+        [HttpGet("[action]")]
+        public List<VehicleDTO> GetAllVehicles()
+        {
+            return _vehicleService.GetAllVehicles();
+        }
 
     }
 }

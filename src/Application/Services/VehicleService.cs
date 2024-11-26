@@ -43,7 +43,24 @@ namespace Application.Services
 
         public List<VehicleDTO> GetAllVehicles()
         {
-            throw new NotImplementedException();
+            List<VehicleDTO> vehicleDTOs = new List<VehicleDTO>();
+            var vehicles = _vehicleRepository.GetAll();
+            
+            foreach (var vehicle in vehicles)
+            {
+                VehicleDTO vehicleDTO = new VehicleDTO();
+                vehicleDTO.Id = vehicle.Id;
+                vehicleDTO.SellerId=vehicle.SellerId;
+                vehicleDTO.Brand=vehicle.Brand;
+                vehicleDTO.Model=vehicle.Model;
+                vehicleDTO.Year=vehicle.Year;
+                vehicleDTO.Color=vehicle.Color;
+                vehicleDTO.Transmission=vehicle.Transmission;
+                vehicleDTO.MaxSpeed = vehicle.MaxSpeed;
+                vehicleDTO.Price=vehicle.Price;
+                vehicleDTOs.Add(vehicleDTO);
+            }
+            return vehicleDTOs;
         }
 
         public VehicleDTO GetVehicleById(int id)
