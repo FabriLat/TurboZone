@@ -85,5 +85,32 @@ namespace Application.Services
             }
             return null;
         }
+
+        public List<VehicleDTO> GetPendingVehicles()
+        {
+            var pendingVehicles = _vehicleRepository.GetPendingVehicles();
+            List<VehicleDTO> vehicleDTOs = new List<VehicleDTO>();
+            if (pendingVehicles != null)
+            {
+                foreach (var vehicle in pendingVehicles)
+                {
+                    VehicleDTO vehicleDTO = new VehicleDTO();
+                    vehicleDTO.Id = vehicle.Id;
+                    vehicleDTO.SellerId = vehicle.SellerId;
+                    vehicleDTO.Brand = vehicle.Brand;
+                    vehicleDTO.Model = vehicle.Model;
+                    vehicleDTO.Year = vehicle.Year;
+                    vehicleDTO.Color = vehicle.Color;
+                    vehicleDTO.Transmission = vehicle.Transmission;
+                    vehicleDTO.MaxSpeed = vehicle.MaxSpeed;
+                    vehicleDTO.Price = vehicle.Price;
+                    vehicleDTOs.Add(vehicleDTO);
+                }
+                return vehicleDTOs;
+            }
+            return null;
+
+        }
+
     }
 }

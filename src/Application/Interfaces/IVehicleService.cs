@@ -20,5 +20,8 @@ namespace Application.Interfaces
        Vehicle? UpdateVehicle(UpdateVehicleDTO vehicle, int userId);
 
         void DeleteVehicle(int id);
+
+        List<VehicleDTO> GetPendingVehicles();
+
     }
 }

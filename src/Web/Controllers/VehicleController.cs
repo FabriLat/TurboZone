@@ -34,6 +34,13 @@ namespace Web.Controllers
             return _vehicleService.GetAllVehicles();
         }
 
+        [HttpGet("[action]")]
+        public List<VehicleDTO> GetPendingVehicles()
+        {
+            return _vehicleService.GetPendingVehicles();
+        }
+
+
         
         [HttpPut("[action]")]
         [Authorize]
