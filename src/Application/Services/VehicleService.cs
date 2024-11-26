@@ -68,9 +68,22 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public void UpdateVehicle(UpdateVehicleDTO vehicle)
-        {
-            throw new NotImplementedException();
+        public Vehicle? UpdateVehicle(UpdateVehicleDTO vehicle, int userId)
+        {   
+            Vehicle? vehicleToUpdate = _vehicleRepository.GetById(vehicle.Id);
+            if (vehicleToUpdate != null && vehicleToUpdate.SellerId == userId)
+            {
+                vehicleToUpdate.Brand = vehicle.Brand;
+                vehicleToUpdate.Model = vehicle.Model;
+                vehicleToUpdate.Year = vehicle.Year;
+                vehicleToUpdate.Color = vehicle.Color;
+                vehicleToUpdate.Transmission = vehicle.Transmission;
+                vehicleToUpdate.MaxSpeed = vehicle.MaxSpeed;
+                vehicleToUpdate.Price = vehicle.Price;
+                _vehicleRepository.Update(vehicleToUpdate);
+                return vehicleToUpdate;
+            }
+            return null;
         }
     }
 }

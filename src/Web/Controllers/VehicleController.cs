@@ -34,5 +34,19 @@ namespace Web.Controllers
             return _vehicleService.GetAllVehicles();
         }
 
+        
+        [HttpPut("[action]")]
+        [Authorize]
+        public ActionResult? UpdateVehicle(UpdateVehicleDTO updateVehicle)
+        {
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
+           var vehicle = _vehicleService.UpdateVehicle(updateVehicle, userId);
+            if (vehicle != null)
+            {
+                return Ok();
+            }
+            return Unauthorized();
+        }
+
     }
 }

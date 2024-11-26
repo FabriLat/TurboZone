@@ -17,7 +17,7 @@ namespace Application.Interfaces
 
         void CreateVehicle(CreateVehicleDTO vehicle, int userId);
         
-       void UpdateVehicle(UpdateVehicleDTO vehicle);
+       Vehicle? UpdateVehicle(UpdateVehicleDTO vehicle, int userId);
 
         void DeleteVehicle(int id);
     }
