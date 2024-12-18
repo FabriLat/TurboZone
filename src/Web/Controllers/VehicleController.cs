@@ -29,6 +29,7 @@ namespace Web.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize(Policy = "ModeratorAndSysAdmin")]
         public List<VehicleDTO> GetAllVehicles()
         {
             return _vehicleService.GetAllVehicles();
@@ -41,13 +42,13 @@ namespace Web.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize(Policy = "ModeratorAndSysAdmin")]
         public List<VehicleDTO> GetPendingVehicles()
         {
             return _vehicleService.GetPendingVehicles();
         }
 
 
-        
         [HttpPut("[action]")]
         [Authorize]
         public ActionResult? UpdateVehicle(UpdateVehicleDTO updateVehicle)

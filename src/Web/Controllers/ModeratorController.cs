@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models.Requests;
 using Application.Models.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,7 @@ namespace Web.Controllers
 
 
         [HttpGet("[action]")]
+        [Authorize(Policy = "ModeratorAndSysAdmin")]
         public List<ModeratorDTO> GetAllModerators()
         {
             return _moderatorService.GetAllModerators();

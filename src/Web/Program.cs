@@ -86,6 +86,33 @@ builder.Services.AddScoped<IUserRepository, RepositoryUser>();
 
 
 
+builder.Services.AddAuthorization(options => //valida que el usuario logueado sea sysadmin
+{
+    options.AddPolicy("SysAdminOnly", policy =>
+        policy.RequireAssertion(context =>
+            context.User.HasClaim(c => c.Type.Contains("role") && c.Value == "SysAdmin")));
+});
+
+
+builder.Services.AddAuthorization(options => //valida que el usuario logueado sea moderador o sysadmin
+{
+    options.AddPolicy("ModeratorAndSysAdmin", policy =>
+        policy.RequireAssertion(context =>
+            context.User.HasClaim(c => c.Type.Contains("role") && (c.Value == "SysAdmin"  || c.Value == "Moderator"))));
+});
+
+
+builder.Services.AddAuthorization(options => //valida que el usuario logueado sea client
+{
+    options.AddPolicy("ClientOnly", policy =>
+        policy.RequireAssertion(context =>
+            context.User.HasClaim(c => c.Type.Contains("role") && c.Value == "Client")));
+});
+
+
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
