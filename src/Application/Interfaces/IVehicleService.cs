@@ -13,6 +13,8 @@ namespace Application.Interfaces
     {
        List<VehicleDTO> GetAllVehicles();
 
+        List<VehicleDTO> GetActiveVehicles();
+
        VehicleDTO GetVehicleById(int id);
 
         void CreateVehicle(CreateVehicleDTO vehicle, int userId);

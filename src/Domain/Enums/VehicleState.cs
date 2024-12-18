@@ -10,6 +10,7 @@ namespace Domain.Enums
     {
         Active,
         Inactive,
-        Pending,
+        PendingCreate,
+        PendingUpdate,
     }
 }

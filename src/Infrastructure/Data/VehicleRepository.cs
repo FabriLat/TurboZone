@@ -20,7 +20,15 @@ namespace Infrastructure.Data
         {
             var appDbContext = (ApplicationContext)_dbContext;
             
-            return appDbContext.Vehicles.Where(v => v.State == VehicleState.Pending).ToList();
+            return appDbContext.Vehicles.Where(v => v.State == VehicleState.PendingCreate).ToList();
+        }
+
+
+        public List<Vehicle> GetActiveVehicles()
+        {
+            var appDbContext = (ApplicationContext)_dbContext;
+
+            return appDbContext.Vehicles.Where(v => v.State == VehicleState.Active).ToList();
         }
 
     }

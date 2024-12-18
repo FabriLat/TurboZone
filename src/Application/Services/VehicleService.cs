@@ -32,7 +32,7 @@ namespace Application.Services
             newVehicle.MaxSpeed=vehicle.MaxSpeed;
             newVehicle.Price=vehicle.Price;
             newVehicle.SellerId = userId;
-            newVehicle.State = VehicleState.Pending;
+            newVehicle.State = VehicleState.PendingCreate;
             _vehicleRepository.Add(newVehicle);
         }
 
@@ -62,6 +62,31 @@ namespace Application.Services
             }
             return vehicleDTOs;
         }
+
+
+        public List<VehicleDTO> GetActiveVehicles()
+        {
+            List<VehicleDTO> vehicleDTOs = new List<VehicleDTO>();
+            var vehicles = _vehicleRepository.GetActiveVehicles();
+
+            foreach (var vehicle in vehicles)
+            {
+                VehicleDTO vehicleDTO = new VehicleDTO();
+                vehicleDTO.Id = vehicle.Id;
+                vehicleDTO.SellerId = vehicle.SellerId;
+                vehicleDTO.Brand = vehicle.Brand;
+                vehicleDTO.Model = vehicle.Model;
+                vehicleDTO.Year = vehicle.Year;
+                vehicleDTO.Color = vehicle.Color;
+                vehicleDTO.Transmission = vehicle.Transmission;
+                vehicleDTO.MaxSpeed = vehicle.MaxSpeed;
+                vehicleDTO.Price = vehicle.Price;
+                vehicleDTOs.Add(vehicleDTO);
+            }
+            return vehicleDTOs;
+        }
+
+
 
         public VehicleDTO GetVehicleById(int id)
         {
