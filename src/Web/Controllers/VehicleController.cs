@@ -62,5 +62,25 @@ namespace Web.Controllers
             return Unauthorized();
         }
 
+        [HttpPut("[action]")]
+        [Authorize(Policy = "ModeratorAndSysAdmin")]
+        public ActionResult? ChangeVehicleState(int vehicleId, string newState)
+        {
+            try
+            {
+                if(_vehicleService.ChangeVehicleState(vehicleId, newState))
+                {
+                    return Ok();
+                }
+                return NotFound();
+                
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
+        }
+
     }
 }

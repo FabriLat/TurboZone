@@ -53,8 +53,16 @@ namespace Web.Controllers
         {
             try
             {
-                _clientService.UpdateClient(updateClientDTO);
-                return Ok();
+                bool updated = _clientService.UpdateClient(updateClientDTO);
+                if(updated) 
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound("Client not found.");
+                }
+                
             }
             catch(Exception ex)
             {

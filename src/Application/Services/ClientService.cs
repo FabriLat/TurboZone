@@ -60,7 +60,7 @@ namespace Application.Services
             return null;
         }
 
-        public void UpdateClient(UpdateClientDTO updateClientDTO)
+        public bool UpdateClient(UpdateClientDTO updateClientDTO)
         {
             Client? clientToModify = _clientRepository.GetById(updateClientDTO.Id);
 
@@ -71,7 +71,9 @@ namespace Application.Services
                 clientToModify.Password = updateClientDTO.Password;
                 clientToModify.Location = updateClientDTO.Location;
                 _clientRepository.Update(clientToModify);
+                return true;
             }
+            return false;
             
         }
 

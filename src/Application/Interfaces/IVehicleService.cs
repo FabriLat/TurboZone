@@ -25,5 +25,7 @@ namespace Application.Interfaces
 
         List<VehicleDTO> GetPendingVehicles();
 
+        public bool ChangeVehicleState(int id, string newState);
+
     }
 }

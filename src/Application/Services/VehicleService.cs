@@ -58,6 +58,7 @@ namespace Application.Services
                 vehicleDTO.Transmission=vehicle.Transmission;
                 vehicleDTO.MaxSpeed = vehicle.MaxSpeed;
                 vehicleDTO.Price=vehicle.Price;
+                vehicleDTO.State=vehicle.State;
                 vehicleDTOs.Add(vehicleDTO);
             }
             return vehicleDTOs;
@@ -88,9 +89,9 @@ namespace Application.Services
 
 
 
-        public VehicleDTO GetVehicleById(int id)
+        public VehicleDTO? GetVehicleById(int id)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public Vehicle? UpdateVehicle(UpdateVehicleDTO vehicle, int userId)
@@ -135,6 +136,24 @@ namespace Application.Services
             }
             return null;
 
+        }
+
+        public bool ChangeVehicleState(int id, string newState)
+        {
+            Vehicle? vehicle = _vehicleRepository.GetById(id);
+            if (vehicle != null)
+            {
+                if (newState == "Active")
+                { 
+                vehicle.State = VehicleState.Active;
+                }else if(newState == "Pending")
+                {
+                    vehicle.State = VehicleState.PendingUpdate;
+                }
+                _vehicleRepository.Update(vehicle);
+                return true;
+            }
+            return false;
         }
 
     }
