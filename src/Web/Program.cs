@@ -111,6 +111,18 @@ builder.Services.AddAuthorization(options => //valida que el usuario logueado se
 
 
 
+//Habilita el cors para que se pueda usar en el front.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5173", "http://localhost:5174", "http://localhost:5175")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
 
 
 var app = builder.Build();
@@ -121,6 +133,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//para poder usar el cors
+app.UseCors("AllowLocalhost");
 
 app.UseHttpsRedirection();
 
