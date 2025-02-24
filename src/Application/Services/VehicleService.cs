@@ -91,6 +91,12 @@ namespace Application.Services
 
         public VehicleDTO? GetVehicleById(int id)
         {
+            Vehicle vehicle = _vehicleRepository.GetById(id);
+            if (vehicle != null)
+            {
+                VehicleDTO dto = VehicleDTO.Create(vehicle);
+                return dto;
+            }
             return null;
         }
 

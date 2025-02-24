@@ -1,4 +1,5 @@
-﻿using Domain.Enums;
+﻿using Domain.Entities;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,5 +29,27 @@ namespace Application.Models.Responses
         public decimal Price { get; set; }
 
         public VehicleState State { get; set; }
+
+
+
+        public static VehicleDTO Create(Vehicle vehicle)
+        {
+            VehicleDTO dto = new VehicleDTO();
+            dto.Id = vehicle.Id;
+            dto.SellerId = vehicle.SellerId;
+            dto.Brand = vehicle.Brand;
+            dto.Model = vehicle.Model;
+            dto.Year = vehicle.Year;
+            dto.Color = vehicle.Color;
+            dto.Transmission = vehicle.Transmission;
+            dto.MaxSpeed = vehicle.MaxSpeed;
+            dto.Price = vehicle.Price;
+            dto.State = vehicle.State;
+            return dto;
+        }
     }
+
+
+
+
 }

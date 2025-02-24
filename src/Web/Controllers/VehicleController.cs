@@ -35,6 +35,26 @@ namespace Web.Controllers
             return _vehicleService.GetAllVehicles();
         }
 
+        [HttpGet("[action]/{id}")]
+        public VehicleDTO? GetVehicleById([FromRoute]int id)
+        {
+            try
+            {
+                VehicleDTO vehicleDto =  _vehicleService.GetVehicleById(id);
+                if (vehicleDto != null)
+                {
+                    return vehicleDto;
+                }
+                return null;
+            }catch (Exception ex)
+            {
+                return null;
+            }
+          
+
+        }
+
+
         [HttpGet("[action]")]
         public List<VehicleDTO> GetActiveVehicles()
         {
