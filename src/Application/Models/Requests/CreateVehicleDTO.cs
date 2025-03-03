@@ -18,6 +18,10 @@ namespace Application.Models.Requests
 
         public string Transmission { get; set; }
 
+        public string ImageUrl { get; set; }
+
+        public string Description { get; set; }
+
         public decimal MaxSpeed { get; set; }
 
         public decimal Price { get; set; }

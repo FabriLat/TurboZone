@@ -43,6 +43,7 @@ namespace Web.Controllers
                 VehicleDTO vehicleDto =  _vehicleService.GetVehicleById(id);
                 if (vehicleDto != null)
                 {
+                    Console.WriteLine("Reespuesta enviada tantas veces como veas este mensaje");
                     return vehicleDto;
                 }
                 return null;
@@ -50,8 +51,6 @@ namespace Web.Controllers
             {
                 return null;
             }
-          
-
         }
 
 

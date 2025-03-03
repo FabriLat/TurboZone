@@ -14,7 +14,7 @@ namespace Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Review> Reviews { get; set; }
-        public DbSet<Purchase> Purchases { get; set; }
+        public DbSet<Image> Images { get; set; }
 
 
 
@@ -47,35 +47,20 @@ namespace Infrastructure.Data
             }
 
 
-
-            {//RELACIONES DE PURCHASE
-                modelBuilder.Entity<Purchase>()
-                    .HasOne<Client>()
-                    .WithMany()
-                    .HasForeignKey(p => p.ClientId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                modelBuilder.Entity<Purchase>()
-                    .HasOne<Client>()
-                    .WithMany()
-                    .HasForeignKey(p => p.SellerId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-               modelBuilder.Entity<Purchase>()
-                    .HasOne<Vehicle>()
-                    .WithMany()
-                    .HasForeignKey(p => p.VehicleId)
-                    .OnDelete(DeleteBehavior.Restrict);
-            }
-
             {//RELACIONES DE VEHICLE
                 modelBuilder.Entity<Vehicle>()
                     .HasOne<Client>()
                     .WithMany()
                     .HasForeignKey(v => v.SellerId)
                     .OnDelete(DeleteBehavior.Cascade);
-            }
 
+
+                modelBuilder.Entity<Vehicle>()
+                    .HasMany<Image>()
+                    .WithOne()
+                    .HasForeignKey(i => i.VehicleId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            }
         }
 
     }
