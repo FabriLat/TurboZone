@@ -43,7 +43,6 @@ namespace Web.Controllers
                 VehicleDTO vehicleDto =  _vehicleService.GetVehicleById(id);
                 if (vehicleDto != null)
                 {
-                    Console.WriteLine("Reespuesta enviada tantas veces como veas este mensaje");
                     return vehicleDto;
                 }
                 return null;
@@ -68,12 +67,12 @@ namespace Web.Controllers
         }
 
 
-        [HttpPut("[action]")]
+        [HttpPut("[action]/{vehicleId}")]
         [Authorize]
-        public ActionResult? UpdateVehicle(UpdateVehicleDTO updateVehicle)
+        public ActionResult? UpdateVehicle(int vehicleId,[FromBody]UpdateVehicleDTO updateVehicle)
         {
             int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
-           var vehicle = _vehicleService.UpdateVehicle(updateVehicle, userId);
+           var vehicle = _vehicleService.UpdateVehicle(updateVehicle, userId, vehicleId);
             if (vehicle != null)
             {
                 return Ok();
@@ -81,9 +80,9 @@ namespace Web.Controllers
             return Unauthorized();
         }
 
-        [HttpPut("[action]")]
+        [HttpPut("[action]/{vehicleId}")]
         [Authorize(Policy = "ModeratorAndSysAdmin")]
-        public ActionResult? ChangeVehicleState(int vehicleId, string newState)
+        public ActionResult? ChangeVehicleState(int vehicleId, [FromBody]string newState)
         {
             try
             {

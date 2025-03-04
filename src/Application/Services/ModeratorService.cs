@@ -46,9 +46,9 @@ namespace Application.Services
             return moderatorDTOs;
         }
 
-        public void UpdateModerator(UpdateModeratorDTO dto)
+        public void UpdateModerator(UpdateModeratorDTO dto, int id)
         {
-            Moderator? moderatorToModify = _moderatorRepository.GetById(dto.Id);
+            Moderator? moderatorToModify = _moderatorRepository.GetById(id);
             if (moderatorToModify != null) 
             {
                 moderatorToModify.FullName = dto.FullName;

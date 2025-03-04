@@ -17,7 +17,7 @@ namespace Application.Interfaces
 
         ClientDTO GetClientById(int id);
 
-        bool UpdateClient(UpdateClientDTO ClientDto);
+        bool UpdateClient(UpdateClientDTO ClientDto, int id);
 
         Client? DeleteClient(int id);
 

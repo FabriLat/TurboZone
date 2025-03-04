@@ -48,12 +48,12 @@ namespace Web.Controllers
             return _clientService.GetAllClients();
         }
 
-        [HttpPut("[action]")]
-        public ActionResult UpdateClient([FromBody] UpdateClientDTO updateClientDTO)
+        [HttpPut("[action]/{id}")]
+        public ActionResult UpdateClient(int id, [FromBody] UpdateClientDTO updateClientDTO)
         {
             try
             {
-                bool updated = _clientService.UpdateClient(updateClientDTO);
+                bool updated = _clientService.UpdateClient(updateClientDTO, id);
                 if(updated) 
                 {
                     return Ok();
@@ -62,7 +62,6 @@ namespace Web.Controllers
                 {
                     return NotFound("Client not found.");
                 }
-                
             }
             catch(Exception ex)
             {

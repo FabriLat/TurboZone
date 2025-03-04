@@ -60,9 +60,9 @@ namespace Application.Services
             return null;
         }
 
-        public bool UpdateClient(UpdateClientDTO updateClientDTO)
+        public bool UpdateClient(UpdateClientDTO updateClientDTO, int id)
         {
-            Client? clientToModify = _clientRepository.GetById(updateClientDTO.Id);
+            Client? clientToModify = _clientRepository.GetById(id);
 
             if (clientToModify != null)
             {

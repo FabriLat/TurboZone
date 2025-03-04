@@ -9,7 +9,6 @@ namespace Application.Models.Requests
 {
     public class UpdateVehicleDTO
     {
-        public int Id { get; set; }
 
         public string Brand { get; set; }
        

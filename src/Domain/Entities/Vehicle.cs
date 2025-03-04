@@ -42,7 +42,12 @@ namespace Domain.Entities
 
         public VehicleState State { get; set; } = VehicleState.Active;
 
-        public Vehicle() { }
+        public List<Image> Images { get; set; }
+
+        public Vehicle()
+        {
+            Images = new List<Image>();
+        }
 
         public Vehicle(int id, string brand, string model, string year, string color, string transmission, decimal price, int sellerId)
         {
@@ -54,6 +59,7 @@ namespace Domain.Entities
             Transmission = transmission;
             Price = price;
             SellerId = sellerId;
+            Images = new List<Image>();
         }
     }
 }

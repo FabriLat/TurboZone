@@ -30,26 +30,37 @@ namespace Application.Models.Responses
 
         public VehicleState State { get; set; }
 
+        public List<Image> Images { get; set; }
+
 
 
         public static VehicleDTO Create(Vehicle vehicle)
         {
-            VehicleDTO dto = new VehicleDTO();
-            dto.Id = vehicle.Id;
-            dto.SellerId = vehicle.SellerId;
-            dto.Brand = vehicle.Brand;
-            dto.Model = vehicle.Model;
-            dto.Year = vehicle.Year;
-            dto.Color = vehicle.Color;
-            dto.Transmission = vehicle.Transmission;
-            dto.MaxSpeed = vehicle.MaxSpeed;
-            dto.Price = vehicle.Price;
-            dto.State = vehicle.State;
+            VehicleDTO dto = new VehicleDTO
+            {
+                Id = vehicle.Id,
+                SellerId = vehicle.SellerId,
+                Brand = vehicle.Brand,
+                Model = vehicle.Model,
+                Year = vehicle.Year,
+                Color = vehicle.Color,
+                Transmission = vehicle.Transmission,
+                MaxSpeed = vehicle.MaxSpeed,
+                Price = vehicle.Price,
+                State = vehicle.State,
+                Images = new List<Image>() // Asegura que la lista esté inicializada
+            };
+
+            foreach (var image in vehicle.Images)
+            {
+                dto.Images.Add(image);
+            }
+
             return dto;
         }
+
     }
-
-
-
-
 }
+
+
+    

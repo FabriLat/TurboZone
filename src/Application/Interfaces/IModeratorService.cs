@@ -14,7 +14,7 @@ namespace Application.Interfaces
 
         List<ModeratorDTO> GetAllModerators();
 
-        void UpdateModerator(UpdateModeratorDTO moderatorDTO);
+        void UpdateModerator(UpdateModeratorDTO moderatorDTO, int id);
 
         void DeleteModerator(int moderatorId);
     }

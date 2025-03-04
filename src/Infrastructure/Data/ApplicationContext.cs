@@ -56,7 +56,7 @@ namespace Infrastructure.Data
 
 
                 modelBuilder.Entity<Vehicle>()
-                    .HasMany<Image>()
+                    .HasMany(v => v.Images)
                     .WithOne()
                     .HasForeignKey(i => i.VehicleId)
                     .OnDelete(DeleteBehavior.Cascade);

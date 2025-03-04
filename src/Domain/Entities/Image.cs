@@ -22,7 +22,6 @@ namespace Domain.Entities
         [Required]
         public string ImageUrl { get; set; }
 
-
         public int VehicleId { get; set; }
         public Image() { }
 

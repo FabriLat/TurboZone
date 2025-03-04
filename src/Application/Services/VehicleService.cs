@@ -44,21 +44,11 @@ namespace Application.Services
         public List<VehicleDTO> GetAllVehicles()
         {
             List<VehicleDTO> vehicleDTOs = new List<VehicleDTO>();
-            var vehicles = _vehicleRepository.GetAll();
+            var vehicles = _vehicleRepository.GetAllVehicles();
             
             foreach (var vehicle in vehicles)
             {
-                VehicleDTO vehicleDTO = new VehicleDTO();
-                vehicleDTO.Id = vehicle.Id;
-                vehicleDTO.SellerId=vehicle.SellerId;
-                vehicleDTO.Brand=vehicle.Brand;
-                vehicleDTO.Model=vehicle.Model;
-                vehicleDTO.Year=vehicle.Year;
-                vehicleDTO.Color=vehicle.Color;
-                vehicleDTO.Transmission=vehicle.Transmission;
-                vehicleDTO.MaxSpeed = vehicle.MaxSpeed;
-                vehicleDTO.Price=vehicle.Price;
-                vehicleDTO.State=vehicle.State;
+                VehicleDTO vehicleDTO = VehicleDTO.Create(vehicle);
                 vehicleDTOs.Add(vehicleDTO);
             }
             return vehicleDTOs;
@@ -72,16 +62,7 @@ namespace Application.Services
 
             foreach (var vehicle in vehicles)
             {
-                VehicleDTO vehicleDTO = new VehicleDTO();
-                vehicleDTO.Id = vehicle.Id;
-                vehicleDTO.SellerId = vehicle.SellerId;
-                vehicleDTO.Brand = vehicle.Brand;
-                vehicleDTO.Model = vehicle.Model;
-                vehicleDTO.Year = vehicle.Year;
-                vehicleDTO.Color = vehicle.Color;
-                vehicleDTO.Transmission = vehicle.Transmission;
-                vehicleDTO.MaxSpeed = vehicle.MaxSpeed;
-                vehicleDTO.Price = vehicle.Price;
+                VehicleDTO vehicleDTO = VehicleDTO.Create(vehicle);
                 vehicleDTOs.Add(vehicleDTO);
             }
             return vehicleDTOs;
@@ -91,7 +72,7 @@ namespace Application.Services
 
         public VehicleDTO? GetVehicleById(int id)
         {
-            Vehicle vehicle = _vehicleRepository.GetById(id);
+            Vehicle? vehicle = _vehicleRepository.GetById(id);
             if (vehicle != null)
             {
                 VehicleDTO dto = VehicleDTO.Create(vehicle);
@@ -100,9 +81,9 @@ namespace Application.Services
             return null;
         }
 
-        public Vehicle? UpdateVehicle(UpdateVehicleDTO vehicle, int userId)
+        public Vehicle? UpdateVehicle(UpdateVehicleDTO vehicle, int userId, int vehicleId)
         {   
-            Vehicle? vehicleToUpdate = _vehicleRepository.GetById(vehicle.Id);
+            Vehicle? vehicleToUpdate = _vehicleRepository.GetById(vehicleId);
             if (vehicleToUpdate != null && vehicleToUpdate.SellerId == userId)
             {
                 vehicleToUpdate.Brand = vehicle.Brand;
@@ -126,16 +107,7 @@ namespace Application.Services
             {
                 foreach (var vehicle in pendingVehicles)
                 {
-                    VehicleDTO vehicleDTO = new VehicleDTO();
-                    vehicleDTO.Id = vehicle.Id;
-                    vehicleDTO.SellerId = vehicle.SellerId;
-                    vehicleDTO.Brand = vehicle.Brand;
-                    vehicleDTO.Model = vehicle.Model;
-                    vehicleDTO.Year = vehicle.Year;
-                    vehicleDTO.Color = vehicle.Color;
-                    vehicleDTO.Transmission = vehicle.Transmission;
-                    vehicleDTO.MaxSpeed = vehicle.MaxSpeed;
-                    vehicleDTO.Price = vehicle.Price;
+                    VehicleDTO vehicleDTO = VehicleDTO.Create(vehicle);
                     vehicleDTOs.Add(vehicleDTO);
                 }
                 return vehicleDTOs;

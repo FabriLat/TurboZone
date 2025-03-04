@@ -19,7 +19,7 @@ namespace Application.Interfaces
 
         void CreateVehicle(CreateVehicleDTO vehicle, int userId);
         
-       Vehicle? UpdateVehicle(UpdateVehicleDTO vehicle, int userId);
+       Vehicle? UpdateVehicle(UpdateVehicleDTO vehicle, int userId, int vehicleId);
 
         void DeleteVehicle(int id);
 

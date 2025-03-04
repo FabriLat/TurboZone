@@ -9,8 +9,12 @@ namespace Domain.Interfaces
 {
     public interface IVehicleRepository : IRepositoryBase<Vehicle>
     {
+        List<Vehicle> GetAllVehicles();
+
         List<Vehicle> GetPendingVehicles();
 
         List<Vehicle> GetActiveVehicles();
+
+        Vehicle GetById(int id);
     }
 }

@@ -34,10 +34,10 @@ namespace Web.Controllers
 
 
 
-        [HttpPut("[action]")]
-        public ActionResult UpdateModerator([FromBody]UpdateModeratorDTO updateModerator)
+        [HttpPut("[action]/{id}")]
+        public ActionResult UpdateModerator(int id,[FromBody]UpdateModeratorDTO updateModerator)
         {
-            _moderatorService.UpdateModerator(updateModerator);
+            _moderatorService.UpdateModerator(updateModerator, id);
             return Ok();
         }
 
