@@ -11,7 +11,9 @@ namespace Domain.Interfaces
     {
         List<Vehicle> GetAllVehicles();
 
-        List<Vehicle> GetPendingVehicles();
+        List<Vehicle> GetPendingCreateVehicles();
+
+        public List<Vehicle> GetPendingUpdateVehicles();
 
         List<Vehicle> GetActiveVehicles();
 

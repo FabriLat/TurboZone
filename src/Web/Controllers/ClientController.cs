@@ -22,7 +22,12 @@ namespace Web.Controllers
         {
             try
             {
-                return Ok(_clientService.CreateNewClient(createClientDTO));
+                var created = _clientService.CreateNewClient(createClientDTO);
+                if(created != null)
+                {
+                    return Ok();
+                }
+                return BadRequest();
             }
             catch (Exception ex)
             {

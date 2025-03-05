@@ -20,15 +20,20 @@ namespace Application.Services
         }
 
 
-       public  void CreateModerator(CreateModeratorDTO dto)
+       public  Moderator? CreateModerator(CreateModeratorDTO dto)
         {
-            Moderator moderator = new Moderator();
-            moderator.FullName = dto.FullName;
-            moderator.Email = dto.Email;
-            moderator.Password = dto.Password;
-            moderator.Location = dto.Location;
-            moderator.Rol = UserRol.Moderator;
-            _moderatorRepository.Add(moderator);
+            if (dto.FullName.Trim().Length > 4 && dto.Password.Trim().ToLower().Length > 6)
+            {
+                Moderator moderator = new Moderator();
+                moderator.FullName = dto.FullName;
+                moderator.Email = dto.Email;
+                moderator.Password = dto.Password;
+                moderator.Location = dto.Location;
+                moderator.Rol = UserRol.Moderator;
+                _moderatorRepository.Add(moderator);
+                return moderator;
+            }
+           return null;
         }
 
 
@@ -46,19 +51,23 @@ namespace Application.Services
             return moderatorDTOs;
         }
 
-        public void UpdateModerator(UpdateModeratorDTO dto, int id)
+        public bool UpdateModerator(UpdateModeratorDTO dto, int id)
         {
             Moderator? moderatorToModify = _moderatorRepository.GetById(id);
             if (moderatorToModify != null) 
             {
+              if (dto.FullName.Trim().Length > 4 && dto.Password.Trim().ToLower().Length > 6)
+                {
                 moderatorToModify.FullName = dto.FullName;
                 moderatorToModify.Email = dto.Email;
                 moderatorToModify.Password = dto.Password;
                 moderatorToModify.Location = dto.Location;
                 _moderatorRepository.Update(moderatorToModify);
+                  return true;
+                }
+              return false;
             }
-
-            
+            return false;  
         }
 
 

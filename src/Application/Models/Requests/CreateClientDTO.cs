@@ -18,6 +18,8 @@ namespace Application.Models.Requests
 
         public string Password { get; set; }
 
+        public string ConfirmPassword { get; set; }
+
         public string Location { get; set; }
 
         public UserRol Rol  = UserRol.Client;

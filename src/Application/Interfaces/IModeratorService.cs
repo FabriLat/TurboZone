@@ -1,5 +1,6 @@
 ﻿using Application.Models.Requests;
 using Application.Models.Responses;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,11 @@ namespace Application.Interfaces
 {
     public interface IModeratorService
     {
-        void CreateModerator(CreateModeratorDTO createModeratorDTO);
+        Moderator CreateModerator(CreateModeratorDTO createModeratorDTO);
 
         List<ModeratorDTO> GetAllModerators();
 
-        void UpdateModerator(UpdateModeratorDTO moderatorDTO, int id);
+        bool UpdateModerator(UpdateModeratorDTO moderatorDTO, int id);
 
         void DeleteModerator(int moderatorId);
     }

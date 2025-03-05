@@ -17,13 +17,23 @@ namespace Infrastructure.Data
         {
         }
 
-        public List<Vehicle> GetPendingVehicles()
+        public List<Vehicle> GetPendingCreateVehicles()
         {
             var appDbContext = (ApplicationContext)_dbContext;
 
             return appDbContext.Vehicles
                 .Include(v => v.Images) // Incluye las imágenes
                 .Where(v => v.State == VehicleState.PendingCreate)
+                .ToList();
+        }
+
+        public List<Vehicle> GetPendingUpdateVehicles()
+        {
+            var appDbContext = (ApplicationContext)_dbContext;
+
+            return appDbContext.Vehicles
+                .Include(v => v.Images)
+                .Where(v => v.State == VehicleState.PendingUpdate)
                 .ToList();
         }
 

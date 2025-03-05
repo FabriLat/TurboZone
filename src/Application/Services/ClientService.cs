@@ -20,18 +20,21 @@ namespace Application.Services
             _clientRepository = clientRepository;
         }
 
-        public ClientDTO CreateNewClient(CreateClientDTO createClientDTO)
+        public ClientDTO? CreateNewClient(CreateClientDTO createClientDTO)
         {
-
-            Client client = new Client();
-            client.FullName= createClientDTO.FullName;
-            client.Email= createClientDTO.Email;
-            client.Password= createClientDTO.Password;
-            client.Location= createClientDTO.Location;
-            _clientRepository.Add(client);
-
-            return ClientDTO.Create(client);
-
+            if(createClientDTO.FullName.Trim().Length > 4 &&
+                createClientDTO.Password.Trim().ToLower().Length > 6 &&
+                createClientDTO.Password == createClientDTO.ConfirmPassword)
+            {
+                Client client = new Client();
+                client.FullName = createClientDTO.FullName;
+                client.Email = createClientDTO.Email;
+                client.Password = createClientDTO.Password;
+                client.Location = createClientDTO.Location;
+                _clientRepository.Add(client);
+                return ClientDTO.Create(client);
+            }
+            return null;
         }
 
 
@@ -66,12 +69,15 @@ namespace Application.Services
 
             if (clientToModify != null)
             {
-                clientToModify.FullName = updateClientDTO.FullName;
-                clientToModify.Email = updateClientDTO.Email;
-                clientToModify.Password = updateClientDTO.Password;
-                clientToModify.Location = updateClientDTO.Location;
-                _clientRepository.Update(clientToModify);
-                return true;
+                if (updateClientDTO.FullName.Trim().Length > 4 && updateClientDTO.Password.Trim().ToLower().Length > 6)
+                {
+                    clientToModify.FullName = updateClientDTO.FullName;
+                    clientToModify.Email = updateClientDTO.Email;
+                    clientToModify.Password = updateClientDTO.Password;
+                    clientToModify.Location = updateClientDTO.Location;
+                    _clientRepository.Update(clientToModify);
+                    return true;
+                }
             }
             return false;
             

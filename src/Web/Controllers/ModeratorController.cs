@@ -20,8 +20,13 @@ namespace Web.Controllers
         [HttpPost("[action]")]
         public ActionResult CreateModerator([FromBody] CreateModeratorDTO createModerator)
         {
-            _moderatorService.CreateModerator(createModerator);
-            return Ok();
+           var created = _moderatorService.CreateModerator(createModerator);
+            if(created != null)
+            {
+                return Ok();
+            }
+            return BadRequest();
+            
         }
 
 

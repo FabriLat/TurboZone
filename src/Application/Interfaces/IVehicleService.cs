@@ -17,13 +17,15 @@ namespace Application.Interfaces
 
        VehicleDTO GetVehicleById(int id);
 
-        void CreateVehicle(CreateVehicleDTO vehicle, int userId);
+        bool? CreateVehicle(CreateVehicleDTO vehicle, int userId);
         
        Vehicle? UpdateVehicle(UpdateVehicleDTO vehicle, int userId, int vehicleId);
 
         void DeleteVehicle(int id);
 
         List<VehicleDTO> GetPendingVehicles();
+
+        public List<VehicleDTO> GetPendingUpdateVehicles();
 
         public bool ChangeVehicleState(int id, string newState);
 

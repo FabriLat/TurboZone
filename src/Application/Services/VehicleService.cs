@@ -15,15 +15,30 @@ namespace Application.Services
 {
     public class VehicleService : IVehicleService
     {
+
         private readonly IVehicleRepository _vehicleRepository;
-        public VehicleService(IVehicleRepository vehicleRepository)
+        private readonly IImageService _imageService;
+        public VehicleService(IVehicleRepository vehicleRepository, IImageService imageService)
         {
             _vehicleRepository = vehicleRepository;
+            _imageService = imageService;
         }
 
-        public void CreateVehicle(CreateVehicleDTO vehicle, int userId)
+        public bool? CreateVehicle(CreateVehicleDTO vehicle, int userId)
         {
             Vehicle newVehicle = new Vehicle();
+            UploadImageDTO uploadImage = new UploadImageDTO();
+            if(userId < 0 || string.IsNullOrWhiteSpace(vehicle.Brand) ||
+                string.IsNullOrWhiteSpace(vehicle.Model) ||
+                string.IsNullOrWhiteSpace(vehicle.Year) ||
+                string.IsNullOrWhiteSpace(vehicle.Color) ||
+                string.IsNullOrWhiteSpace(vehicle.Transmission) ||
+                string.IsNullOrWhiteSpace(vehicle.Price.ToString()) ||
+                string.IsNullOrWhiteSpace(vehicle.Price.ToString()))
+            {
+                return null;
+            }
+
             newVehicle.Brand=vehicle.Brand;
             newVehicle.Model=vehicle.Model;
             newVehicle.Year=vehicle.Year;
@@ -33,7 +48,14 @@ namespace Application.Services
             newVehicle.Price=vehicle.Price;
             newVehicle.SellerId = userId;
             newVehicle.State = VehicleState.PendingCreate;
-            _vehicleRepository.Add(newVehicle);
+            var createdVehicle = _vehicleRepository.Add(newVehicle);
+            
+            uploadImage.VehicleId = createdVehicle.Id;
+            uploadImage.ImageName=vehicle.ImageName;
+            uploadImage.ImageUrl = vehicle.ImageUrl;
+            _imageService.UploadImage(uploadImage);
+            
+            return true;
         }
 
         public void DeleteVehicle(int id)
@@ -82,7 +104,20 @@ namespace Application.Services
         }
 
         public Vehicle? UpdateVehicle(UpdateVehicleDTO vehicle, int userId, int vehicleId)
-        {   
+        {
+
+            if (userId < 0 || string.IsNullOrWhiteSpace(vehicle.Brand) ||
+                string.IsNullOrWhiteSpace(vehicle.Model) ||
+                string.IsNullOrWhiteSpace(vehicle.Year) ||
+                string.IsNullOrWhiteSpace(vehicle.Color) ||
+                string.IsNullOrWhiteSpace(vehicle.Transmission) ||
+                string.IsNullOrWhiteSpace(vehicle.Price.ToString()) ||
+                string.IsNullOrWhiteSpace(vehicle.Price.ToString()))
+            {
+                return null;
+            }
+
+
             Vehicle? vehicleToUpdate = _vehicleRepository.GetById(vehicleId);
             if (vehicleToUpdate != null && vehicleToUpdate.SellerId == userId)
             {
@@ -93,6 +128,7 @@ namespace Application.Services
                 vehicleToUpdate.Transmission = vehicle.Transmission;
                 vehicleToUpdate.MaxSpeed = vehicle.MaxSpeed;
                 vehicleToUpdate.Price = vehicle.Price;
+                vehicleToUpdate.State = VehicleState.PendingUpdate;
                 _vehicleRepository.Update(vehicleToUpdate);
                 return vehicleToUpdate;
             }
@@ -101,7 +137,24 @@ namespace Application.Services
 
         public List<VehicleDTO> GetPendingVehicles()
         {
-            var pendingVehicles = _vehicleRepository.GetPendingVehicles();
+            var pendingVehicles = _vehicleRepository.GetPendingCreateVehicles();
+            List<VehicleDTO> vehicleDTOs = new List<VehicleDTO>();
+            if (pendingVehicles != null)
+            {
+                foreach (var vehicle in pendingVehicles)
+                {
+                    VehicleDTO vehicleDTO = VehicleDTO.Create(vehicle);
+                    vehicleDTOs.Add(vehicleDTO);
+                }
+                return vehicleDTOs;
+            }
+            return null;
+
+        }
+
+        public List<VehicleDTO> GetPendingUpdateVehicles()
+        {
+            var pendingVehicles = _vehicleRepository.GetPendingUpdateVehicles();
             List<VehicleDTO> vehicleDTOs = new List<VehicleDTO>();
             if (pendingVehicles != null)
             {

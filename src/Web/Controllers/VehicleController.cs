@@ -24,8 +24,13 @@ namespace Web.Controllers
         public ActionResult CreateVehicle([FromBody] CreateVehicleDTO createVehicle)
         {
             int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
-            _vehicleService.CreateVehicle(createVehicle, userId);
-            return Ok();
+            var create = _vehicleService.CreateVehicle(createVehicle, userId);
+            if(create == true)
+            {
+                return Ok();
+            }
+            return BadRequest();
+            
         }
 
         [HttpGet("[action]")]
@@ -65,6 +70,14 @@ namespace Web.Controllers
         {
             return _vehicleService.GetPendingVehicles();
         }
+
+        [HttpGet("[action]")]
+        [Authorize(Policy = "ModeratorAndSysAdmin")]
+        public List<VehicleDTO> GetPendingUpdateVehicles()
+        {
+            return _vehicleService.GetPendingUpdateVehicles();
+        }
+
 
 
         [HttpPut("[action]/{vehicleId}")]

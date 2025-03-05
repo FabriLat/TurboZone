@@ -48,7 +48,7 @@ namespace Application.Models.Responses
                 MaxSpeed = vehicle.MaxSpeed,
                 Price = vehicle.Price,
                 State = vehicle.State,
-                Images = new List<Image>() // Asegura que la lista esté inicializada
+                Images = new List<Image>() 
             };
 
             foreach (var image in vehicle.Images)
