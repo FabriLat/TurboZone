@@ -44,9 +44,12 @@ namespace Domain.Entities
 
         public List<Image> Images { get; set; }
 
+        public List<Comment> Comments { get; set; }
+
         public Vehicle()
         {
             Images = new List<Image>();
+            Comments = new List<Comment>();
         }
 
         public Vehicle(int id, string brand, string model, string year, string color, string transmission, decimal price, int sellerId)
@@ -60,6 +63,7 @@ namespace Domain.Entities
             Price = price;
             SellerId = sellerId;
             Images = new List<Image>();
+            Comments = new List<Comment>();
         }
     }
 }

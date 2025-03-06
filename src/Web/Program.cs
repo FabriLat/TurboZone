@@ -69,6 +69,7 @@ builder.Services.AddScoped<IModeratorService,ModeratorService>();
 builder.Services.AddScoped<IVehicleService,VehicleService>();
 builder.Services.AddScoped<ISysAdminService,SysAdminService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.Configure<AuthenticationServiceOptions>(
   builder.Configuration.GetSection(AuthenticationServiceOptions.AuthenticationService));
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -82,6 +83,7 @@ builder.Services.AddScoped<IVehicleRepository,VehicleRepository>();
 builder.Services.AddScoped<ISysAdminRepository,SysAdminRepository>();
 builder.Services.AddScoped<IUserRepository, RepositoryUser>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 #endregion
 

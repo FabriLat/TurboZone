@@ -13,7 +13,7 @@ namespace Infrastructure.Data
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
-        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<Image> Images { get; set; }
 
 
@@ -34,16 +34,16 @@ namespace Infrastructure.Data
 
 
             {//Relaciones de Review
-                modelBuilder.Entity<Review>()
+                modelBuilder.Entity<Comment>()
                     .HasOne<Vehicle>()
                     .WithMany()
                     .HasForeignKey(r => r.VehicleId)
                     .OnDelete(DeleteBehavior.Cascade);
 
-                modelBuilder.Entity<Review>()
+                modelBuilder.Entity<Comment>()
                     .HasOne<Client>()
                     .WithMany()
-                    .HasForeignKey(r => r.ClientId);
+                    .HasForeignKey(r => r.UserId);
             }
 
 
@@ -60,6 +60,15 @@ namespace Infrastructure.Data
                     .WithOne()
                     .HasForeignKey(i => i.VehicleId)
                     .OnDelete(DeleteBehavior.Cascade);
+
+
+                modelBuilder.Entity<Vehicle>()
+                    .HasMany(v => v.Comments)
+                    .WithOne()
+                    .HasForeignKey(r => r.VehicleId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+
             }
         }
 

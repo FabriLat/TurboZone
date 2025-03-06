@@ -9,28 +9,26 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Review : IEntity
+    public class Comment : IEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public string Description { get; set; }
-
-        public decimal Rating { get; set; }
+        public string Text { get; set; }
 
         public int VehicleId { get; set; }
 
-        public int ClientId { get; set; }
+        public int UserId { get; set; }
 
-        public Review() { }
+        public Comment() { }
 
-        public Review(int id, string description, decimal rating, int vehicleId)
+        public Comment(int id, string text, int vehicleId, int userId)
         {
             Id = id;
-            Description = description;
-            Rating = rating;
+            Text = text;
             VehicleId = vehicleId;
+            UserId = userId;
         }
     }
 }
