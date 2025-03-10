@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models.Requests;
 using Application.Models.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "SysAdminOnly")]
     public class SysAdminController : ControllerBase
     {
         private readonly ISysAdminService _sysAdminService;

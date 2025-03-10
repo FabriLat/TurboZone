@@ -10,8 +10,10 @@ namespace Application.Interfaces
 {
     public interface IImageService
     {
-        bool UploadImage(UploadImageDTO imageDTO);
+        public bool UploadImage(UploadImageDTO imageDTO, int userId);
 
-        bool UpdateImage(int vehicleId, UpdateImageDTO imageDTO);
+        bool UpdateImage(int id, UpdateImageDTO imageDTO, int userId);
+
+        bool DeleteImage(int imageId, int userId);
     }
 }

@@ -64,6 +64,7 @@ builder.Services.AddAuthentication("Bearer")
 
 
 #region Services
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IClientService,ClientService>();
 builder.Services.AddScoped<IModeratorService,ModeratorService>();
 builder.Services.AddScoped<IVehicleService,VehicleService>();
@@ -77,6 +78,7 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 
 #region Repositories
+builder.Services.AddScoped<IUserRepository,RepositoryUser>();
 builder.Services.AddScoped<IClientRepository,ClientRepository>();
 builder.Services.AddScoped<IModeratorRepository,ModeratorRepository>();
 builder.Services.AddScoped<IVehicleRepository,VehicleRepository>();

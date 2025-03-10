@@ -53,7 +53,7 @@ namespace Application.Services
             uploadImage.VehicleId = createdVehicle.Id;
             uploadImage.ImageName=vehicle.ImageName;
             uploadImage.ImageUrl = vehicle.ImageUrl;
-            _imageService.UploadImage(uploadImage);
+            _imageService.UploadImage(uploadImage , userId);
             
             return true;
         }

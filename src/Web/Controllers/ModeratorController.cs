@@ -9,6 +9,7 @@ namespace Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "SysAdminOnly")]
     public class ModeratorController : ControllerBase
     {
         private readonly IModeratorService _moderatorService;

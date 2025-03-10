@@ -75,6 +75,7 @@ namespace Web.Controllers
         [Authorize(Policy = "ModeratorAndSysAdmin")]
         public List<VehicleDTO> GetPendingUpdateVehicles()
         {
+            
             return _vehicleService.GetPendingUpdateVehicles();
         }
 
@@ -84,13 +85,20 @@ namespace Web.Controllers
         [Authorize]
         public ActionResult? UpdateVehicle(int vehicleId,[FromBody]UpdateVehicleDTO updateVehicle)
         {
-            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
-           var vehicle = _vehicleService.UpdateVehicle(updateVehicle, userId, vehicleId);
-            if (vehicle != null)
+            try
             {
-                return Ok();
+                int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
+                var vehicle = _vehicleService.UpdateVehicle(updateVehicle, userId, vehicleId);
+                if (vehicle != null)
+                {
+                    return Ok();
+                }
+                return Unauthorized();
+            }catch (Exception ex)
+            {
+                return BadRequest();
             }
-            return Unauthorized();
+          
         }
 
         [HttpPut("[action]/{vehicleId}")]

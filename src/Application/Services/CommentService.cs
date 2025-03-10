@@ -13,9 +13,11 @@ namespace Application.Services
     public class CommentService : ICommentService
     {
         private readonly ICommentRepository _commentRepository;
-        public CommentService(ICommentRepository commentRepository)
+        private readonly IVehicleService _vehicleService;
+        public CommentService(ICommentRepository commentRepository, IVehicleService vehicleService)
         {
             _commentRepository = commentRepository;
+            _vehicleService = vehicleService;
         }
 
         public bool AddComment(int userId, CreateCommentDTO commentDTO)
@@ -26,6 +28,20 @@ namespace Application.Services
             newComment.Text = commentDTO.Text;  
             _commentRepository.Add(newComment);
             return true;
+        }
+
+        public bool DeleteComment(int userId, int commentId)
+        {
+            var comment = _commentRepository.GetById(commentId);
+            if (comment == null) 
+                return false;
+            var vehicle = _vehicleService.GetVehicleById(comment.VehicleId);
+            if((comment != null && comment.UserId == userId) || vehicle != null && userId == vehicle.SellerId)
+            {
+                _commentRepository.Delete(comment);
+                return true;
+            }
+            return false;
         }
 
     }

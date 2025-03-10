@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models.Requests;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,42 +14,82 @@ namespace Application.Services
     public class ImageService : IImageService
     {
         private readonly IImageRepository _imageRepository;
-        public ImageService(IImageRepository imageRepository)
+        private readonly IUserService _userService;
+        private readonly IVehicleRepository _vehicleRepository;
+        public ImageService(IImageRepository imageRepository, IUserService userService, IVehicleRepository vehicleRepository)
         {
             _imageRepository = imageRepository;
+            _userService = userService;
+            _vehicleRepository = vehicleRepository;
         }
 
 
-        public bool UploadImage(UploadImageDTO imageDTO)
+        public bool UploadImage(UploadImageDTO imageDTO, int userId)
         {
             List<Image> images = _imageRepository.GetImagesByVehicleId(imageDTO.VehicleId);
 
-            if(images.Count() < 6 && !string.IsNullOrWhiteSpace(imageDTO.ImageName) && !string.IsNullOrWhiteSpace(imageDTO.ImageUrl))
+
+            if(images.Count < 6 && !string.IsNullOrWhiteSpace(imageDTO.ImageName) && !string.IsNullOrWhiteSpace(imageDTO.ImageUrl))
             {
-                Image newImage = new Image();
-                newImage.VehicleId = imageDTO.VehicleId;
-                newImage.ImageName = imageDTO.ImageName;
-                newImage.ImageUrl = imageDTO.ImageUrl;
-                _imageRepository.Upload(newImage);
-                return true;
+                var vehicle = _vehicleRepository.GetById(imageDTO.VehicleId);
+                if (vehicle.SellerId == userId)
+                {
+                    Image newImage = new Image();
+                    newImage.VehicleId = imageDTO.VehicleId;
+                    newImage.ImageName = imageDTO.ImageName;
+                    newImage.ImageUrl = imageDTO.ImageUrl;
+                    _imageRepository.Upload(newImage);
+                    return true;
+                }
             }
             return false;
-
-
         }
 
-        public bool UpdateImage(int id, UpdateImageDTO imageDTO)
+        public bool UpdateImage(int id, UpdateImageDTO imageDTO, int userId)
         {
-            var image = _imageRepository.GetById(id);
+            Image? image = _imageRepository.GetById(id);
+            User? user = _userService.GetUserById(userId);
+
+            if (image == null || user == null)
+                return false;
+
+            var vehicle = _vehicleRepository.GetById(image.VehicleId);
+            if (vehicle == null)
+                return false;
+
             if (image != null && !string.IsNullOrWhiteSpace(imageDTO.NewImageName) && !string.IsNullOrWhiteSpace(imageDTO.NewImageUrl))
             {
-                image.ImageUrl = imageDTO.NewImageUrl;
-                image.ImageName = imageDTO.NewImageName;
-                _imageRepository.Update(image);
-                return true;
+                if(vehicle.SellerId == userId || user.Rol == UserRol.Moderator || user.Rol == UserRol.SysAdmin)
+                {
+                    image.ImageUrl = imageDTO.NewImageUrl;
+                    image.ImageName = imageDTO.NewImageName;
+                    _imageRepository.Update(image);
+                    return true;
+                }
             }
             return false;
 
         }
-    }   
+
+        public bool DeleteImage(int imageId, int userId)
+        {
+            User? user = _userService.GetUserById(userId);
+            Image? image = _imageRepository.GetById(imageId);
+
+            if (image == null || user == null)
+                return false;
+
+            var vehicle = _vehicleRepository.GetById(image.VehicleId);
+            if (vehicle == null)
+                return false;
+
+            if (vehicle.SellerId == userId || user.Rol == UserRol.Moderator || user.Rol == UserRol.SysAdmin)
+            {
+                _imageRepository.Delete(image);
+                return true;
+            }
+            return false;
+        }
+
+    }
 }
