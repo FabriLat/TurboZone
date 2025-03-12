@@ -23,5 +23,11 @@ namespace Infrastructure.Data
             return user;
         }
 
+        public User? GetByFullName(string fullName)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.FullName.ToLower() == fullName.ToLower());
+            return user;
+        }
+
     }
 }

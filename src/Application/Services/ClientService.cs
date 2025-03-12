@@ -4,6 +4,7 @@ using Application.Models.Responses;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Exceptions;
+using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,37 +16,41 @@ namespace Application.Services
     public class ClientService : IClientService
     {
         private readonly IClientRepository _clientRepository;
-        public ClientService(IClientRepository clientRepository)
+        private readonly IUserRepository _userRepository;
+        public ClientService(IClientRepository clientRepository, IUserRepository userRepository)
         {
             _clientRepository = clientRepository;
+            _userRepository = userRepository;
         }
 
         public ClientDTO? CreateNewClient(CreateClientDTO createClientDTO)
         {
-            if(createClientDTO.FullName.Trim().Length > 4 &&
-                createClientDTO.Password.Trim().ToLower().Length > 6 &&
-                createClientDTO.Password == createClientDTO.ConfirmPassword)
+            var nameUsed = _userRepository.GetByFullName(createClientDTO.FullName);
+            var emailUsed = _userRepository.GetByEmail(createClientDTO.Email);
+            if (nameUsed == null && emailUsed == null)
             {
-                int spaces = 0;
-                string name = createClientDTO.FullName.Trim();
-                foreach (var letter in name)
+
+                if (createClientDTO.FullName.Trim().Length > 4 &&
+                    createClientDTO.Password.Trim().ToLower().Length > 6 &&
+                    createClientDTO.Password == createClientDTO.ConfirmPassword)
                 {
-                    if (string.IsNullOrWhiteSpace(letter.ToString()))
-                    {
-                        spaces += 1;
-                    }
-                };
-                if (spaces > 2)
-                    return null;
-                Client client = new Client();
-                client.FullName = createClientDTO.FullName;
-                client.Email = createClientDTO.Email;
-                client.Password = createClientDTO.Password;
-                client.Location = createClientDTO.Location;
-                _clientRepository.Add(client);
-                return ClientDTO.Create(client);
+                    int spacesName = createClientDTO.FullName.Count(c => c == ' ');
+                    int spacesPassword = createClientDTO.Password.Count(c => c == ' ');
+                    if (spacesName > 2 || spacesPassword > 0)
+                        return null;
+
+                    Client client = new Client();
+                    client.FullName = createClientDTO.FullName;
+                    client.Email = createClientDTO.Email;
+                    client.Password = createClientDTO.Password;
+                    client.Location = createClientDTO.Location;
+                    _clientRepository.Add(client);
+                    return ClientDTO.Create(client);
+                }
+                return null;
             }
             return null;
+
         }
 
 
@@ -61,6 +66,8 @@ namespace Application.Services
             }
             return clientsDTO;
         }
+
+
 
 
         public ClientDTO? GetClientById(int id)

@@ -11,6 +11,9 @@ namespace Domain.Interfaces
     {
         
             User? GetByEmail(string email);
+
+            User? GetByFullName(string fullName);
         
     }
 }
+    
