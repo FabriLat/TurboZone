@@ -26,6 +26,17 @@ namespace Application.Services
                 createClientDTO.Password.Trim().ToLower().Length > 6 &&
                 createClientDTO.Password == createClientDTO.ConfirmPassword)
             {
+                int spaces = 0;
+                string name = createClientDTO.FullName.Trim();
+                foreach (var letter in name)
+                {
+                    if (string.IsNullOrWhiteSpace(letter.ToString()))
+                    {
+                        spaces += 1;
+                    }
+                };
+                if (spaces > 2)
+                    return null;
                 Client client = new Client();
                 client.FullName = createClientDTO.FullName;
                 client.Email = createClientDTO.Email;

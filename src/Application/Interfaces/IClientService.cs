@@ -11,11 +11,11 @@ namespace Application.Interfaces
 {
     public interface IClientService
     {
-        ClientDTO CreateNewClient(CreateClientDTO ClientDto);
+        ClientDTO? CreateNewClient(CreateClientDTO ClientDto);
 
         List<ClientDTO> GetAllClients();
 
-        ClientDTO GetClientById(int id);
+        ClientDTO? GetClientById(int id);
 
         bool UpdateClient(UpdateClientDTO ClientDto, int id);
 
