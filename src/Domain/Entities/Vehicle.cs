@@ -38,7 +38,7 @@ namespace Domain.Entities
         public decimal Price { get; set; }
 
         [Required]
-        public int SellerId { get; set; } //FK para saber quien es el cliente que lo vende
+        public int OwnerId { get; set; } //FK para saber quien es el cliente que lo vende
 
         public VehicleState State { get; set; } = VehicleState.Active;
 
@@ -61,7 +61,7 @@ namespace Domain.Entities
             Color = color;
             Transmission = transmission;
             Price = price;
-            SellerId = sellerId;
+            OwnerId = sellerId;
             Images = new List<Image>();
             Comments = new List<Comment>();
         }

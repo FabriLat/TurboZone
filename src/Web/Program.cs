@@ -41,10 +41,11 @@ builder.Services.AddSwaggerGen(setupAction =>
 
 
 
-
-//CONFIGURACION DE ENTITY FRAMEWORK PARA PERSISTENCIA DE DATOS
-builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
-    builder.Configuration["ConnectionStrings:DBConnectionString"]));
+//CONFIGURACION PARA PERSISTENCIA DE DATOS CON MYSQL    
+builder.Services.AddDbContext<ApplicationContext>(options =>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DBConnectionString"),
+        new MySqlServerVersion(new Version(8, 0, 21))));
 
 
 builder.Services.AddAuthentication("Bearer")
@@ -91,27 +92,26 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 
 
-builder.Services.AddAuthorization(options => //valida que el usuario logueado sea sysadmin
+builder.Services.AddAuthorization(options =>
 {
+    // Valida que el usuario sea SysAdmin
     options.AddPolicy("SysAdminOnly", policy =>
         policy.RequireAssertion(context =>
             context.User.HasClaim(c => c.Type.Contains("role") && c.Value == "SysAdmin")));
-});
 
-
-builder.Services.AddAuthorization(options => //valida que el usuario logueado sea moderador o sysadmin
-{
+    // Valida que el usuario sea Moderator o SysAdmin
     options.AddPolicy("ModeratorAndSysAdmin", policy =>
         policy.RequireAssertion(context =>
-            context.User.HasClaim(c => c.Type.Contains("role") && (c.Value == "SysAdmin"  || c.Value == "Moderator"))));
-});
+            context.User.HasClaim(c => c.Type.Contains("role") && (c.Value == "SysAdmin" || c.Value == "Moderator"))));
 
-
-builder.Services.AddAuthorization(options => //valida que el usuario logueado sea client
-{
+    // Valida que el usuario sea Client
     options.AddPolicy("ClientOnly", policy =>
         policy.RequireAssertion(context =>
             context.User.HasClaim(c => c.Type.Contains("role") && c.Value == "Client")));
+
+    // Nueva política: Solo usuarios NO autenticados
+    options.AddPolicy("AnonymousOnly", policy =>
+        policy.RequireAssertion(context => !context.User.Identity.IsAuthenticated));
 });
 
 

@@ -1,11 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
@@ -16,12 +11,9 @@ namespace Infrastructure.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Image> Images { get; set; }
 
-
-
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
         }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,7 +25,7 @@ namespace Infrastructure.Data
 
 
 
-            {//Relaciones de Review
+            {//Relaciones de Comment
                 modelBuilder.Entity<Comment>()
                     .HasOne<Vehicle>()
                     .WithMany()
@@ -51,7 +43,7 @@ namespace Infrastructure.Data
                 modelBuilder.Entity<Vehicle>()
                     .HasOne<Client>()
                     .WithMany()
-                    .HasForeignKey(v => v.SellerId)
+                    .HasForeignKey(v => v.OwnerId)
                     .OnDelete(DeleteBehavior.Cascade);
 
 
@@ -71,6 +63,5 @@ namespace Infrastructure.Data
 
             }
         }
-
     }
 }

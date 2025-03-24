@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Models.Requests;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,18 @@ namespace Web.Controllers
             int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
             _commentService.AddComment(userId, commentDTO);
             return Ok();
+        }
+
+        [HttpGet("[action]/{vehicleId}")]
+        public List<Comment> GetCommentsByVehicleId([FromRoute]int vehicleId)
+        {
+            try
+            {
+                return _commentService.GetCommentsByVehicleId(vehicleId);
+            }catch (Exception ex) 
+            {
+                return new List<Comment>();
+            }
         }
 
         [HttpDelete("[action]/{id}")]

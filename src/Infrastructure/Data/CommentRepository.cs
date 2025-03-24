@@ -13,5 +13,13 @@ namespace Infrastructure.Data
         public CommentRepository(ApplicationContext context) : base(context)
         {
         }
+
+        public List<Comment>? GetCommentsByVehicleId(int vehicleId)
+        {
+            var appDbContext = (ApplicationContext)_dbContext;
+
+            List<Comment> comments = appDbContext.Comments.Where(c => c.VehicleId == vehicleId).ToList();
+            return comments;
+        }
     }
 }

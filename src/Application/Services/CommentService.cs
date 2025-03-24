@@ -30,6 +30,15 @@ namespace Application.Services
             return true;
         }
 
+        public List<Comment>? GetCommentsByVehicleId(int vehicleId)
+        {
+            var comments = _commentRepository.GetCommentsByVehicleId(vehicleId);
+            return comments.ToList();
+        }
+
+
+
+
         public bool DeleteComment(int userId, int commentId)
         {
             var comment = _commentRepository.GetById(commentId);

@@ -2,8 +2,10 @@
 using Application.Models.Requests;
 using Application.Models.Responses;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Web.Controllers
 {
@@ -18,6 +20,7 @@ namespace Web.Controllers
         }
 
         [HttpPost("[action]")]
+        [Authorize(Policy = "AnonymousOnly")]
         public ActionResult CreateClient([FromBody]CreateClientDTO createClientDTO)
         {
             try
@@ -58,7 +61,8 @@ namespace Web.Controllers
         {
             try
             {
-                bool updated = _clientService.UpdateClient(updateClientDTO, id);
+                int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
+                bool updated = _clientService.UpdateClient(updateClientDTO, id, userId);
                 if(updated) 
                 {
                     return Ok();
@@ -75,14 +79,16 @@ namespace Web.Controllers
         }
 
         [HttpDelete("[action]/{id}")]
-        public ActionResult<Client?> DeleteClient([FromRoute] int id)
+        [Authorize]
+        public ActionResult DeleteClient([FromRoute] int id)
         {
-            var deletedClient = _clientService.DeleteClient(id);
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
+            var deletedClient = _clientService.DeleteClient(id, userId);
             if (deletedClient != null) 
             {
                 return Ok();
             }
-            return NotFound();
+            return Unauthorized();
         }
 
     }

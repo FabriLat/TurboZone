@@ -17,6 +17,7 @@ namespace Application.Services
     {
         private readonly IClientRepository _clientRepository;
         private readonly IUserRepository _userRepository;
+
         public ClientService(IClientRepository clientRepository, IUserRepository userRepository)
         {
             _clientRepository = clientRepository;
@@ -39,6 +40,10 @@ namespace Application.Services
                     if (spacesName > 2 || spacesPassword > 0)
                         return null;
 
+
+                    try
+                    {
+
                     Client client = new Client();
                     client.FullName = createClientDTO.FullName;
                     client.Email = createClientDTO.Email;
@@ -46,6 +51,13 @@ namespace Application.Services
                     client.Location = createClientDTO.Location;
                     _clientRepository.Add(client);
                     return ClientDTO.Create(client);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("El error: "+  ex.InnerException?.Message);
+                    }
+
+                    
                 }
                 return null;
             }
@@ -81,11 +93,11 @@ namespace Application.Services
             return null;
         }
 
-        public bool UpdateClient(UpdateClientDTO updateClientDTO, int id)
+        public bool UpdateClient(UpdateClientDTO updateClientDTO, int id, int userId)
         {
             Client? clientToModify = _clientRepository.GetById(id);
-
-            if (clientToModify != null)
+                
+            if (clientToModify != null && clientToModify.Id == userId)
             {
                 if (updateClientDTO.FullName.Trim().Length > 4 && updateClientDTO.Password.Trim().ToLower().Length > 6)
                 {
@@ -97,18 +109,27 @@ namespace Application.Services
                     return true;
                 }
             }
-            return false;
-            
+            return false;  
         }
 
-        public Client? DeleteClient(int id)
+        public Client? DeleteClient(int id, int userId)
         {
-            Client? client = _clientRepository.GetById(id);
-            if (client != null)
+            Client? clientToDelete = _clientRepository.GetById(id);
+            var user = _userRepository.GetById(userId);
+
+            if(user != null && clientToDelete != null)
             {
-                client.State = UserState.Inactive;
-                _clientRepository.Update(client);
-                return client;
+                Console.WriteLine(user.FullName +" " + user.Id + " y " + clientToDelete.FullName + " "+ clientToDelete.Id);
+                if (user.Rol == UserRol.Moderator || user.Rol == UserRol.SysAdmin)
+                {
+                    _clientRepository.Delete(clientToDelete);
+                    return clientToDelete;
+                }
+                else if(user.Id == clientToDelete.Id)
+                {
+                    _clientRepository.Delete(clientToDelete);
+                    return clientToDelete;
+                }
             }
             return null;
         }

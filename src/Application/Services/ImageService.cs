@@ -32,7 +32,7 @@ namespace Application.Services
             if(images.Count < 6 && !string.IsNullOrWhiteSpace(imageDTO.ImageName) && !string.IsNullOrWhiteSpace(imageDTO.ImageUrl))
             {
                 var vehicle = _vehicleRepository.GetById(imageDTO.VehicleId);
-                if (vehicle.SellerId == userId)
+                if (vehicle.OwnerId == userId)
                 {
                     Image newImage = new Image();
                     newImage.VehicleId = imageDTO.VehicleId;
@@ -59,7 +59,7 @@ namespace Application.Services
 
             if (image != null && !string.IsNullOrWhiteSpace(imageDTO.NewImageName) && !string.IsNullOrWhiteSpace(imageDTO.NewImageUrl))
             {
-                if(vehicle.SellerId == userId || user.Rol == UserRol.Moderator || user.Rol == UserRol.SysAdmin)
+                if(vehicle.OwnerId == userId || user.Rol == UserRol.Moderator || user.Rol == UserRol.SysAdmin)
                 {
                     image.ImageUrl = imageDTO.NewImageUrl;
                     image.ImageName = imageDTO.NewImageName;
@@ -83,7 +83,7 @@ namespace Application.Services
             if (vehicle == null)
                 return false;
 
-            if (vehicle.SellerId == userId || user.Rol == UserRol.Moderator || user.Rol == UserRol.SysAdmin)
+            if (vehicle.OwnerId == userId || user.Rol == UserRol.Moderator || user.Rol == UserRol.SysAdmin)
             {
                 _imageRepository.Delete(image);
                 return true;

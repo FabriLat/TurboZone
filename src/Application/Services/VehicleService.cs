@@ -46,7 +46,7 @@ namespace Application.Services
             newVehicle.Transmission=vehicle.Transmission;
             newVehicle.MaxSpeed=vehicle.MaxSpeed;
             newVehicle.Price=vehicle.Price;
-            newVehicle.SellerId = userId;
+            newVehicle.OwnerId = userId;
             newVehicle.State = VehicleState.PendingCreate;
             var createdVehicle = _vehicleRepository.Add(newVehicle);
             
@@ -119,7 +119,7 @@ namespace Application.Services
 
 
             Vehicle? vehicleToUpdate = _vehicleRepository.GetById(vehicleId);
-            if (vehicleToUpdate != null && vehicleToUpdate.SellerId == userId)
+            if (vehicleToUpdate != null && vehicleToUpdate.OwnerId == userId)
             {
                 vehicleToUpdate.Brand = vehicle.Brand;
                 vehicleToUpdate.Model = vehicle.Model;

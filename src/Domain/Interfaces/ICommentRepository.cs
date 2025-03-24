@@ -10,5 +10,6 @@ namespace Domain.Interfaces
 {
     public interface ICommentRepository : IRepositoryBase<Comment>
     {
+        List<Comment>? GetCommentsByVehicleId(int vehicleId);
     }
 }

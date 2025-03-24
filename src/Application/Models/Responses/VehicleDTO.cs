@@ -39,7 +39,7 @@ namespace Application.Models.Responses
             VehicleDTO dto = new VehicleDTO
             {
                 Id = vehicle.Id,
-                SellerId = vehicle.SellerId,
+                SellerId = vehicle.OwnerId,
                 Brand = vehicle.Brand,
                 Model = vehicle.Model,
                 Year = vehicle.Year,
