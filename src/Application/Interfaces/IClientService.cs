@@ -21,6 +21,5 @@ namespace Application.Interfaces
 
         Client? DeleteClient(int id, int userId);
 
-
     }
 }

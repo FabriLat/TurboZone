@@ -8,21 +8,8 @@ using System.Threading.Tasks;
 
 namespace Application.Models.Responses
 {
-    public class ClientDTO
+    public class ClientDTO : UserDTO
     {
-        public int Id { get; set; }
-        public string FullName { get; set; }
-
-        public string Email { get; set; }
-
-        public string Location { get; set; }
-
-        public string ImageUrl { get; set; }
-
-        public UserRol Rol {  get; set; }
-
-        public UserState State { get; set; }
-
 
         public static ClientDTO Create(Client client)
         {
@@ -36,9 +23,5 @@ namespace Application.Models.Responses
             clientDTO.State = client.State;
             return clientDTO;
         }
-
-
-       
-
     }
 }

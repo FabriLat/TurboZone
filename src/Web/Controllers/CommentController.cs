@@ -2,63 +2,87 @@
 using Application.Models.Requests;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     [Authorize]
     public class CommentController : ControllerBase
     {
         private readonly ICommentService _commentService;
+
         public CommentController(ICommentService commentService)
         {
             _commentService = commentService;
         }
 
-        [HttpPost("[action]")]
-        public IActionResult AddComment([FromBody] CreateCommentDTO commentDTO)
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateCommentDTO commentDTO)
         {
-            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
-            _commentService.AddComment(userId, commentDTO);
-            return Ok();
-        }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        [HttpGet("[action]/{vehicleId}")]
-        public List<Comment> GetCommentsByVehicleId([FromRoute]int vehicleId)
-        {
-            try
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
             {
-                return _commentService.GetCommentsByVehicleId(vehicleId);
-            }catch (Exception ex) 
-            {
-                return new List<Comment>();
+                return Unauthorized(new { Message = "Usuario no identificado" });
             }
-        }
 
-        [HttpDelete("[action]/{id}")]
-        public IActionResult DeleteComment(int id)
-        {
-            try
+            int userId = int.Parse(userIdClaim.Value);
+            var createdComment = _commentService.AddComment(userId, commentDTO);
+            if (createdComment == null)
             {
-                int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
-                var response = _commentService.DeleteComment(userId, id);
-                if(response == true)
-                {
-                    return Ok();
-                }
-                return BadRequest();
+                return BadRequest(new { Message = "No se pudo crear el comentario" });
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            
+
+            return CreatedAtAction(nameof(Get), new { id = createdComment.Id }, createdComment);
         }
 
 
+        [HttpGet("{id}")]
+        public ActionResult<Comment> Get(int id)
+        {
+            Comment? comment = _commentService.GetComment(id);
+            if(comment == null)
+            {
+                return NotFound(new {Message = "Comentario no encontrado" });
+            }
+            return Ok(comment);
+        }
+
+
+        [HttpGet("vehicle/{vehicleId}")]
+        public ActionResult<List<Comment>> GetByVehicleId(int vehicleId)
+        {
+            var comments = _commentService.GetCommentsByVehicleId(vehicleId);
+            if (comments == null || !comments.Any())
+            {
+                return NotFound(new { Message = "No se encontraron comentarios para este vehículo" });
+            }
+            return Ok(comments);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return Unauthorized(new { Message = "Usuario no identificado" });
+            }
+
+            int userId = int.Parse(userIdClaim.Value);
+            var deleted = _commentService.DeleteComment(userId, id);
+            if (!deleted)
+            {
+                return Forbid();
+            }
+            return NoContent();
+        }
     }
 }

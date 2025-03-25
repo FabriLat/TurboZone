@@ -43,20 +43,19 @@ namespace Application.Services
 
                     try
                     {
-
-                    Client client = new Client();
-                    client.FullName = createClientDTO.FullName;
-                    client.Email = createClientDTO.Email;
-                    client.Password = createClientDTO.Password;
-                    client.Location = createClientDTO.Location;
-                    _clientRepository.Add(client);
-                    return ClientDTO.Create(client);
+                        Client client = new Client();
+                        client.FullName = createClientDTO.FullName;
+                        client.Email = createClientDTO.Email;
+                        client.Password = createClientDTO.Password;
+                        client.Location = createClientDTO.Location;
+                        client.ImageUrl = "";
+                        _clientRepository.Add(client);
+                        return ClientDTO.Create(client);
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine("El error: "+  ex.InnerException?.Message);
                     }
-
                     
                 }
                 return null;
@@ -64,7 +63,6 @@ namespace Application.Services
             return null;
 
         }
-
 
         public List<ClientDTO> GetAllClients()
         {
@@ -78,9 +76,6 @@ namespace Application.Services
             }
             return clientsDTO;
         }
-
-
-
 
         public ClientDTO? GetClientById(int id)
         {

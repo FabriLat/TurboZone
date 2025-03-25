@@ -9,17 +9,8 @@ using System.Threading.Tasks;
 
 namespace Application.Models.Responses
 {
-    public class ModeratorDTO
+    public class ModeratorDTO : UserDTO
     {
-        public int Id { get; set; }
-
-        public string FullName { get; set; }
-
-        public string Email { get; set; }
-
-        public UserRol Rol {  get; set; }
-
-        public UserState State { get; set; }
 
 
         public static ModeratorDTO Create(Moderator moderator)
@@ -28,7 +19,9 @@ namespace Application.Models.Responses
             dto.Id = moderator.Id;
             dto.FullName = moderator.FullName;
             dto.Email = moderator.Email;
-            dto.Rol = moderator.Rol;
+            dto.Location = moderator.Location;
+            dto.ImageUrl = moderator.ImageUrl;
+            dto.Rol = moderator.Rol;    
             dto.State = moderator.State;
             return dto;
         }

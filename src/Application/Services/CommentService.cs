@@ -20,14 +20,14 @@ namespace Application.Services
             _vehicleService = vehicleService;
         }
 
-        public bool AddComment(int userId, CreateCommentDTO commentDTO)
+        public Comment? AddComment(int userId, CreateCommentDTO commentDTO)
         {
            Comment newComment = new Comment();
             newComment.UserId = userId;
             newComment.VehicleId = commentDTO.VehicleId;
             newComment.Text = commentDTO.Text;  
             _commentRepository.Add(newComment);
-            return true;
+            return newComment;
         }
 
         public List<Comment>? GetCommentsByVehicleId(int vehicleId)
@@ -36,7 +36,11 @@ namespace Application.Services
             return comments.ToList();
         }
 
-
+        public Comment? GetComment(int id)
+        {
+           Comment? comment = _commentRepository.GetById(id);
+            return comment;
+        }
 
 
         public bool DeleteComment(int userId, int commentId)

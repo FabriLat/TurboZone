@@ -9,28 +9,15 @@ using System.Threading.Tasks;
 
 namespace Application.Models.Responses
 {
-    public class SysAdminDTO
+    public class SysAdminDTO : UserDTO
     {
-        public int Id { get; set; }
 
-        public string FullName { get; set; }
-
-        public string Email { get; set; }
-
-        public string Password { get; set; }
-
-        public string Location { get; set; }
-
-        public UserRol Rol {  get; set; }
-
-
-        public static SysAdminDTO Create(SysAdmin sysAdmnin)
+        public static SysAdminDTO Create(SysAdmin sysAdmin)
         {
             SysAdminDTO sysAdminDTO = new SysAdminDTO();
-            sysAdminDTO.FullName = sysAdmnin.FullName;
-            sysAdminDTO.Email = sysAdmnin.Email;
-            sysAdminDTO.Password = sysAdmnin.Password;
-            sysAdminDTO.Location = sysAdmnin.Location;
+            sysAdminDTO.FullName = sysAdmin.FullName;
+            sysAdminDTO.Email = sysAdmin.Email;
+            sysAdminDTO.Location = sysAdmin.Location;
             return sysAdminDTO;
         }
 

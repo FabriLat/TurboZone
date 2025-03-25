@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     [Authorize]
     public class ImageController : ControllerBase
@@ -18,11 +18,10 @@ namespace Web.Controllers
             _imageService = imageService;
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         public IActionResult UploadImage([FromBody] UploadImageDTO imageDTO)
         {
-            try
-            {
+
                 int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
                 var upload = _imageService.UploadImage(imageDTO, userId);
                 if(upload == true)
@@ -30,13 +29,10 @@ namespace Web.Controllers
                     return Ok();
                 }
                 return Unauthorized();
-            }catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
             }
-        }
+          
 
-        [HttpPut("[action]/{id}")]
+        [HttpPut("{id}")]
         public IActionResult UpdateImage(int id, [FromBody]UpdateImageDTO imageDTO)
         {
             try
@@ -58,7 +54,7 @@ namespace Web.Controllers
 
         }
 
-        [HttpDelete("[action]/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteImage(int id)
         {
             try

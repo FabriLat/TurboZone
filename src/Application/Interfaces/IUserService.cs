@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Models.Responses;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Application.Interfaces
 {
     public interface IUserService
     {
-        User? GetUserById(int userId);
+        UserDTO? GetUserById(int userId);
     }
 }

@@ -3,93 +3,85 @@ using Application.Models.Requests;
 using Application.Models.Responses;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class ClientController : ControllerBase
     {
         private readonly IClientService _clientService;
+
         public ClientController(IClientService clientService)
         {
             _clientService = clientService;
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         [Authorize(Policy = "AnonymousOnly")]
-        public ActionResult CreateClient([FromBody]CreateClientDTO createClientDTO)
+        public ActionResult Create([FromBody] CreateClientDTO createClientDTO)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                var created = _clientService.CreateNewClient(createClientDTO);
-                if(created != null)
-                {
-                    return Ok();
-                }
-                return BadRequest();
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
+
+            var created = _clientService.CreateNewClient(createClientDTO);
+            if (created == null)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { Message = "No se pudo crear el cliente" });
             }
+
+            return CreatedAtAction("Get","User" , new { id = created.Id }, created);
         }
 
-        [HttpGet("[action]/{id}")]
-        public ActionResult<ClientDTO?> GetClientById([FromRoute]int id)
-        {
-            ClientDTO? client = _clientService.GetClientById(id);
-            if (client != null)
-            {
-                return client;
-            }
-            return NotFound();
-        }
-
-
-        [HttpGet("[action]")]
-        public List<ClientDTO> GetAllClients()
-        {
-            return _clientService.GetAllClients();
-        }
-
-        [HttpPut("[action]/{id}")]
-        public ActionResult UpdateClient(int id, [FromBody] UpdateClientDTO updateClientDTO)
-        {
-            try
-            {
-                int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
-                bool updated = _clientService.UpdateClient(updateClientDTO, id, userId);
-                if(updated) 
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return NotFound("Client not found.");
-                }
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            } 
-        }
-
-        [HttpDelete("[action]/{id}")]
+        [HttpGet]
         [Authorize]
-        public ActionResult DeleteClient([FromRoute] int id)
+        public ActionResult<List<ClientDTO>> GetAll()
         {
-            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
-            var deletedClient = _clientService.DeleteClient(id, userId);
-            if (deletedClient != null) 
-            {
-                return Ok();
-            }
-            return Unauthorized();
+            var clients = _clientService.GetAllClients();
+            return Ok(clients);
         }
 
+        [HttpPut("{id}")]
+        [Authorize]
+        public ActionResult Update(int id, [FromBody] UpdateClientDTO updateClientDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
+            bool updated = _clientService.UpdateClient(updateClientDTO, id, userId);
+            if (!updated)
+            {
+                return NotFound(new { Message = "Cliente no encontrado o no autorizado" });
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public ActionResult Delete(int id)
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return Unauthorized(new { Message = "Usuario no identificado" });
+            }
+
+            int userId = int.Parse(userIdClaim.Value);
+            var deletedClient = _clientService.DeleteClient(id, userId);
+            if (deletedClient == null)
+            {
+                return Forbid();
+            }
+
+            return NoContent();
+        }
     }
 }

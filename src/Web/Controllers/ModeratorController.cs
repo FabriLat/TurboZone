@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     [Authorize(Policy = "SysAdminOnly")]
     public class ModeratorController : ControllerBase
@@ -18,7 +18,7 @@ namespace Web.Controllers
             _moderatorService = moderatorService;
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         public ActionResult CreateModerator([FromBody] CreateModeratorDTO createModerator)
         {
            var created = _moderatorService.CreateModerator(createModerator);
@@ -31,24 +31,29 @@ namespace Web.Controllers
         }
 
 
-        [HttpGet("[action]")]
+        [HttpGet]
         [Authorize(Policy = "ModeratorAndSysAdmin")]
-        public List<ModeratorDTO> GetAllModerators()
+        public List<ModeratorDTO> GetAll()
         {
             return _moderatorService.GetAllModerators();
         }
 
 
 
-        [HttpPut("[action]/{id}")]
-        public ActionResult UpdateModerator(int id,[FromBody]UpdateModeratorDTO updateModerator)
+        [HttpPut("{id}")]
+        public ActionResult Update(int id,[FromBody]UpdateModeratorDTO updateModerator)
         {
-            _moderatorService.UpdateModerator(updateModerator, id);
-            return Ok();
+            bool updated = _moderatorService.UpdateModerator(updateModerator, id);
+            if(updated == true)
+            {
+                return NoContent();
+            }
+            return NotFound();
+            
         }
 
 
-        [HttpDelete("[action]/{id}")]
+        [HttpDelete("{id}")]
         public ActionResult DeleteModerator([FromRoute]int id)
         {
             _moderatorService.DeleteModerator(id);

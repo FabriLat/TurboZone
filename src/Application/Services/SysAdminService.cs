@@ -41,7 +41,6 @@ namespace Application.Services
                 sysAdmin.Id = admin.Id;
                 sysAdmin.FullName = admin.FullName;
                 sysAdmin.Email = admin.Email;
-                sysAdmin.Password = admin.Password;
                 sysAdmin.Location = admin.Location;
                 sysAdmin.Rol = admin.Rol;
                 dtosList.Add(sysAdmin);

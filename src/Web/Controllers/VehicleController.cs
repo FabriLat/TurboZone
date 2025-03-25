@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class VehicleController : ControllerBase
     {
@@ -19,29 +19,29 @@ namespace Web.Controllers
         }
 
 
-        [HttpPost("[action]")]
+        [HttpPost]
         [Authorize]
         public ActionResult CreateVehicle([FromBody] CreateVehicleDTO createVehicle)
         {
             int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
             var create = _vehicleService.CreateVehicle(createVehicle, userId);
-            if(create == true)
+            if(create != null)
             {
-                return Ok();
+                return CreatedAtAction(nameof(Get), new { id = create.Id }, create);
             }
             return BadRequest();
             
         }
 
-        [HttpGet("[action]")]
+        [HttpGet]
         [Authorize(Policy = "ModeratorAndSysAdmin")]
-        public List<VehicleDTO> GetAllVehicles()
+        public List<VehicleDTO> GetAll()
         {
             return _vehicleService.GetAllVehicles();
         }
 
-        [HttpGet("[action]/{id}")]
-        public VehicleDTO? GetVehicleById([FromRoute]int id)
+        [HttpGet("{id}")]
+        public VehicleDTO? Get([FromRoute]int id)
         {
             try
             {
@@ -59,21 +59,21 @@ namespace Web.Controllers
 
 
         [HttpGet("[action]")]
-        public List<VehicleDTO> GetActiveVehicles()
+        public List<VehicleDTO> GetActive()
         {
             return _vehicleService.GetActiveVehicles();
         }
 
         [HttpGet("[action]")]
         [Authorize(Policy = "ModeratorAndSysAdmin")]
-        public List<VehicleDTO> GetPendingVehicles()
+        public List<VehicleDTO> GetPending()
         {
             return _vehicleService.GetPendingVehicles();
         }
 
         [HttpGet("[action]")]
         [Authorize(Policy = "ModeratorAndSysAdmin")]
-        public List<VehicleDTO> GetPendingUpdateVehicles()
+        public List<VehicleDTO> GetPendingUpdate()
         {
             
             return _vehicleService.GetPendingUpdateVehicles();
@@ -81,14 +81,14 @@ namespace Web.Controllers
 
 
 
-        [HttpPut("[action]/{vehicleId}")]
+        [HttpPut("{id}")]
         [Authorize]
-        public ActionResult? UpdateVehicle(int vehicleId,[FromBody]UpdateVehicleDTO updateVehicle)
+        public ActionResult? Update(int id,[FromBody]UpdateVehicleDTO updateVehicle)
         {
             try
             {
                 int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
-                var vehicle = _vehicleService.UpdateVehicle(updateVehicle, userId, vehicleId);
+                var vehicle = _vehicleService.UpdateVehicle(updateVehicle, userId, id);
                 if (vehicle != null)
                 {
                     return Ok();
@@ -101,13 +101,13 @@ namespace Web.Controllers
           
         }
 
-        [HttpPut("[action]/{vehicleId}")]
+        [HttpPut("changeState/{id}")]
         [Authorize(Policy = "ModeratorAndSysAdmin")]
-        public ActionResult? ChangeVehicleState(int vehicleId, [FromBody]string newState)
+        public ActionResult? ChangeState(int id, [FromBody]string newState)
         {
             try
             {
-                if(_vehicleService.ChangeVehicleState(vehicleId, newState))
+                if(_vehicleService.ChangeVehicleState(id, newState))
                 {
                     return Ok();
                 }

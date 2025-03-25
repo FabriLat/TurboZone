@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Models.Responses;
 using Domain.Entities;
 using Domain.Interfaces;
 using System;
@@ -17,10 +18,48 @@ namespace Application.Services
             _userRepository = userRepository;
         }
 
-        public User? GetUserById(int userId)
+        public UserDTO? GetUserById(int userId)
         {
             User? user = _userRepository.GetById(userId);
-            return user;
+
+            if(user != null)
+            {
+                UserDTO result = user.Rol.ToString() switch
+                {
+                    "Client" => new ClientDTO
+                    {
+                        Id = user.Id,
+                        FullName = user.FullName,
+                        Rol = user.Rol,
+                        Email = user.Email,
+                        Location = user.Location,
+                        ImageUrl = user.ImageUrl,
+                    },
+                    "Moderator" => new ModeratorDTO
+                    {
+                        Id = user.Id,
+                        FullName = user.FullName,
+                        Rol = user.Rol,
+                        Email = user.Email,
+                        Location = user.Location,
+                        ImageUrl = user.ImageUrl,
+                    },
+                    "SysAdmin" => new SysAdminDTO
+                    {
+                        Id = user.Id,
+                        FullName = user.FullName,
+                        Rol = user.Rol,
+                        Email = user.Email,
+                        Location = user.Location,
+                        ImageUrl = user.ImageUrl,   
+
+                    },
+                    _ => throw new InvalidOperationException("Rol no soportado")
+                };
+                return result;
+            };
+            return null;
+            
             
         }
     }

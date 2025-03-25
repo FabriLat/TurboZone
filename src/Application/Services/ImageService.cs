@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Models.Requests;
+using Application.Models.Responses;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
@@ -48,7 +49,7 @@ namespace Application.Services
         public bool UpdateImage(int id, UpdateImageDTO imageDTO, int userId)
         {
             Image? image = _imageRepository.GetById(id);
-            User? user = _userService.GetUserById(userId);
+            UserDTO? user = _userService.GetUserById(userId);
 
             if (image == null || user == null)
                 return false;
@@ -73,7 +74,7 @@ namespace Application.Services
 
         public bool DeleteImage(int imageId, int userId)
         {
-            User? user = _userService.GetUserById(userId);
+            UserDTO? user = _userService.GetUserById(userId);
             Image? image = _imageRepository.GetById(imageId);
 
             if (image == null || user == null)

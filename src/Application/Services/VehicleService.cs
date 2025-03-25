@@ -24,7 +24,7 @@ namespace Application.Services
             _imageService = imageService;
         }
 
-        public bool? CreateVehicle(CreateVehicleDTO vehicle, int userId)
+        public VehicleDTO? CreateVehicle(CreateVehicleDTO vehicle, int userId)
         {
             Vehicle newVehicle = new Vehicle();
             UploadImageDTO uploadImage = new UploadImageDTO();
@@ -54,8 +54,9 @@ namespace Application.Services
             uploadImage.ImageName=vehicle.ImageName;
             uploadImage.ImageUrl = vehicle.ImageUrl;
             _imageService.UploadImage(uploadImage , userId);
-            
-            return true;
+
+            VehicleDTO vehicleDTO = VehicleDTO.Create(newVehicle);
+            return vehicleDTO;
         }
 
         public void DeleteVehicle(int id)

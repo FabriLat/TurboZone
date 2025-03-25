@@ -17,7 +17,7 @@ namespace Application.Interfaces
 
        VehicleDTO GetVehicleById(int id);
 
-        bool? CreateVehicle(CreateVehicleDTO vehicle, int userId);
+        VehicleDTO? CreateVehicle(CreateVehicleDTO vehicle, int userId);
         
        Vehicle? UpdateVehicle(UpdateVehicleDTO vehicle, int userId, int vehicleId);
 

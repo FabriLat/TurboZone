@@ -18,7 +18,7 @@ namespace Web.Controllers
             _sysAdminService = sysAdminService;
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
        public  ActionResult CreateSysAdmin([FromBody] CreateSysAdminDTO createSysAdminDTO)
         {
             _sysAdminService.CreateSysAdmin(createSysAdminDTO);
@@ -26,7 +26,7 @@ namespace Web.Controllers
         }
 
 
-        [HttpGet("[action]")]
+        [HttpGet]
         public List<SysAdminDTO> GetAllSysAdmin()
         {
             return _sysAdminService.GetAll();

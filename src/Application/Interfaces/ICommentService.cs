@@ -10,7 +10,9 @@ namespace Application.Interfaces
 {
     public interface ICommentService
     {
-        bool AddComment(int userId, CreateCommentDTO commentDTO);
+        Comment? AddComment(int userId, CreateCommentDTO commentDTO);
+
+        Comment? GetComment(int id);
 
         bool DeleteComment(int userId, int commentId);
 

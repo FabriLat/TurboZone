@@ -60,10 +60,9 @@ namespace Infrastructure.Services
             //Se crean los Claims
             var claimsForToken = new List<Claim>();
             claimsForToken.Add(new Claim("sub", user.Id.ToString()));
+            claimsForToken.Add(new Claim("fullName", user.FullName.ToString()));
             claimsForToken.Add(new Claim("role", user.Rol.ToString()));
-            claimsForToken.Add(new Claim("given_name", user.FullName));
-            claimsForToken.Add(new Claim("email", user.Email));
-            claimsForToken.Add(new Claim("imageUrl", user.ImageUrl.ToString()));
+            claimsForToken.Add(new Claim("state", user.State.ToString()));
          
 
             //Se crea el jwt
