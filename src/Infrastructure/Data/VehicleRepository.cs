@@ -52,14 +52,10 @@ namespace Infrastructure.Data
             var appDbContext = (ApplicationContext)_dbContext;
 
             var vehicles = appDbContext.Vehicles
-                .Include(v => v.Images)
+                .Include(v => v.Images.Take(1))
                 .Where(v => v.State == VehicleState.Active)
                 .ToList();
 
-            foreach (var vehicle in vehicles)
-            {
-                Console.WriteLine($"Vehicle {vehicle.Id} has {vehicle.Images?.Count ?? 0} images");
-            }
 
             return vehicles;
         }

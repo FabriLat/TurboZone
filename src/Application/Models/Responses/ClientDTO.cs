@@ -17,8 +17,8 @@ namespace Application.Models.Responses
             clientDTO.Id = client.Id;
             clientDTO.FullName = client.FullName;
             clientDTO.Email = client.Email;
+            clientDTO.PhoneNumber = client.phoneNumber;
             clientDTO.Location = client.Location;
-            clientDTO.ImageUrl = client.ImageUrl;
             clientDTO.Rol = client.Rol;
             clientDTO.State = client.State;
             return clientDTO;

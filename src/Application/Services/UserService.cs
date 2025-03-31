@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models.Responses;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace Application.Services
         {
             User? user = _userRepository.GetById(userId);
 
-            if(user != null)
+            if(user != null && user.State == UserState.Active)
             {
                 UserDTO result = user.Rol.ToString() switch
                 {
@@ -32,8 +33,8 @@ namespace Application.Services
                         FullName = user.FullName,
                         Rol = user.Rol,
                         Email = user.Email,
+                        PhoneNumber = user.phoneNumber,
                         Location = user.Location,
-                        ImageUrl = user.ImageUrl,
                     },
                     "Moderator" => new ModeratorDTO
                     {
@@ -41,8 +42,8 @@ namespace Application.Services
                         FullName = user.FullName,
                         Rol = user.Rol,
                         Email = user.Email,
+                        PhoneNumber = user.phoneNumber,
                         Location = user.Location,
-                        ImageUrl = user.ImageUrl,
                     },
                     "SysAdmin" => new SysAdminDTO
                     {
@@ -50,8 +51,8 @@ namespace Application.Services
                         FullName = user.FullName,
                         Rol = user.Rol,
                         Email = user.Email,
-                        Location = user.Location,
-                        ImageUrl = user.ImageUrl,   
+                        PhoneNumber = user.phoneNumber,
+                        Location = user.Location,  
 
                     },
                     _ => throw new InvalidOperationException("Rol no soportado")

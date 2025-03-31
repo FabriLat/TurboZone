@@ -17,6 +17,7 @@ namespace Application.Models.Responses
             SysAdminDTO sysAdminDTO = new SysAdminDTO();
             sysAdminDTO.FullName = sysAdmin.FullName;
             sysAdminDTO.Email = sysAdmin.Email;
+            sysAdminDTO.PhoneNumber = sysAdmin.phoneNumber;
             sysAdminDTO.Location = sysAdmin.Location;
             return sysAdminDTO;
         }

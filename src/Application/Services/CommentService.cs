@@ -1,6 +1,8 @@
 ﻿using Application.Interfaces;
-using Application.Models.Requests;
+using Application.Models.Requests.Comments;
+using Application.Models.Responses;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,10 +16,12 @@ namespace Application.Services
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IVehicleService _vehicleService;
-        public CommentService(ICommentRepository commentRepository, IVehicleService vehicleService)
+        private readonly IUserService _userService;
+        public CommentService(ICommentRepository commentRepository, IVehicleService vehicleService, IUserService userService)
         {
             _commentRepository = commentRepository;
             _vehicleService = vehicleService;
+            _userService = userService;
         }
 
         public Comment? AddComment(int userId, CreateCommentDTO commentDTO)
@@ -42,6 +46,26 @@ namespace Application.Services
             return comment;
         }
 
+        public Comment? UpdateComment(int commentId, string comment, int userId)
+        {
+            Comment? commentToUpdate = _commentRepository.GetById(commentId);
+            if (commentToUpdate == null) return null;
+            VehicleDTO? vehicle = _vehicleService.GetVehicleById(commentToUpdate.VehicleId);
+            var user = _userService.GetUserById(userId);
+            if (user == null) return null;
+            if (commentToUpdate == null || vehicle == null || user == null)
+            {
+                return null;
+            }
+
+            if(user.Id == commentToUpdate.UserId || user.Rol == UserRol.SysAdmin || user.Rol == UserRol.Moderator)
+            {
+                commentToUpdate.Text = comment;
+                _commentRepository.Update(commentToUpdate);
+                return commentToUpdate;
+            }
+            return null;
+        }
 
         public bool DeleteComment(int userId, int commentId)
         {

@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces;
-using Application.Models.Requests;
+using Application.Models.Requests.Moderators;
 using Application.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,16 +18,20 @@ namespace Web.Controllers
             _moderatorService = moderatorService;
         }
 
+
         [HttpPost]
         public ActionResult CreateModerator([FromBody] CreateModeratorDTO createModerator)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
            var created = _moderatorService.CreateModerator(createModerator);
             if(created != null)
             {
-                return Ok();
+                return CreatedAtAction("Get", "User", new { id = created.Id }, created);
             }
-            return BadRequest();
-            
+            return BadRequest();  
         }
 
 
@@ -39,17 +43,19 @@ namespace Web.Controllers
         }
 
 
-
         [HttpPut("{id}")]
         public ActionResult Update(int id,[FromBody]UpdateModeratorDTO updateModerator)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             bool updated = _moderatorService.UpdateModerator(updateModerator, id);
             if(updated == true)
             {
                 return NoContent();
             }
             return NotFound();
-            
         }
 
 
@@ -59,6 +65,5 @@ namespace Web.Controllers
             _moderatorService.DeleteModerator(id);
             return Ok();
         }
-
     }
 }

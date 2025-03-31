@@ -1,4 +1,4 @@
-﻿using Application.Models.Requests;
+﻿using Application.Models.Requests.Vehicles;
 using Application.Models.Responses;
 using Domain.Entities;
 using System;
@@ -15,7 +15,7 @@ namespace Application.Interfaces
 
         List<VehicleDTO> GetActiveVehicles();
 
-       VehicleDTO GetVehicleById(int id);
+       VehicleDTO? GetVehicleById(int id);
 
         VehicleDTO? CreateVehicle(CreateVehicleDTO vehicle, int userId);
         
@@ -25,7 +25,7 @@ namespace Application.Interfaces
 
         List<VehicleDTO> GetPendingVehicles();
 
-        public List<VehicleDTO> GetPendingUpdateVehicles();
+        public List<VehicleDTO>? GetPendingUpdateVehicles();
 
         public bool ChangeVehicleState(int id, string newState);
 

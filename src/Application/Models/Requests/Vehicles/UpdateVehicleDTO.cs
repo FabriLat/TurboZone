@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Models.Requests
+namespace Application.Models.Requests.Vehicles
 {
-    public class CreateVehicleDTO
+    public class UpdateVehicleDTO
     {
+
         public string Brand { get; set; }
 
         public string Model { get; set; }
@@ -17,11 +19,6 @@ namespace Application.Models.Requests
         public string Color { get; set; }
 
         public string Transmission { get; set; }
-
-        public string ImageName { get; set; }
-        public string ImageUrl { get; set; }
-
-        public string Description { get; set; }
 
         public decimal MaxSpeed { get; set; }
 

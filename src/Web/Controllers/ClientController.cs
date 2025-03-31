@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces;
-using Application.Models.Requests;
+using Application.Models.Requests.Clients;
 using Application.Models.Responses;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +19,7 @@ namespace Web.Controllers
             _clientService = clientService;
         }
 
+
         [HttpPost]
         [Authorize(Policy = "AnonymousOnly")]
         public ActionResult Create([FromBody] CreateClientDTO createClientDTO)
@@ -27,15 +28,14 @@ namespace Web.Controllers
             {
                 return BadRequest(ModelState);
             }
-
             var created = _clientService.CreateNewClient(createClientDTO);
             if (created == null)
             {
                 return BadRequest(new { Message = "No se pudo crear el cliente" });
             }
-
             return CreatedAtAction("Get","User" , new { id = created.Id }, created);
         }
+
 
         [HttpGet]
         [Authorize]
@@ -45,6 +45,7 @@ namespace Web.Controllers
             return Ok(clients);
         }
 
+
         [HttpPut("{id}")]
         [Authorize]
         public ActionResult Update(int id, [FromBody] UpdateClientDTO updateClientDTO)
@@ -53,16 +54,15 @@ namespace Web.Controllers
             {
                 return BadRequest(ModelState);
             }
-
             int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
             bool updated = _clientService.UpdateClient(updateClientDTO, id, userId);
             if (!updated)
             {
                 return NotFound(new { Message = "Cliente no encontrado o no autorizado" });
             }
-
             return NoContent();
         }
+
 
         [HttpDelete("{id}")]
         [Authorize]

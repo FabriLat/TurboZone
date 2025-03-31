@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces;
-using Application.Models.Requests;
+using Application.Models.Requests.Clients;
 using Application.Models.Responses;
 using Domain.Entities;
 using Domain.Enums;
@@ -46,9 +46,9 @@ namespace Application.Services
                         Client client = new Client();
                         client.FullName = createClientDTO.FullName;
                         client.Email = createClientDTO.Email;
+                        client.phoneNumber = createClientDTO.PhoneNumber;
                         client.Password = createClientDTO.Password;
                         client.Location = createClientDTO.Location;
-                        client.ImageUrl = "";
                         _clientRepository.Add(client);
                         return ClientDTO.Create(client);
                     }
@@ -98,6 +98,7 @@ namespace Application.Services
                 {
                     clientToModify.FullName = updateClientDTO.FullName;
                     clientToModify.Email = updateClientDTO.Email;
+                    clientToModify.phoneNumber = updateClientDTO.PhoneNumber;
                     clientToModify.Password = updateClientDTO.Password;
                     clientToModify.Location = updateClientDTO.Location;
                     _clientRepository.Update(clientToModify);

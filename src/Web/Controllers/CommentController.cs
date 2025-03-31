@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces;
-using Application.Models.Requests;
+using Application.Models.Requests.Comments;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +18,7 @@ namespace Web.Controllers
         {
             _commentService = commentService;
         }
+
 
         [HttpPost]
         public IActionResult Create([FromBody] CreateCommentDTO commentDTO)
@@ -39,7 +40,6 @@ namespace Web.Controllers
             {
                 return BadRequest(new { Message = "No se pudo crear el comentario" });
             }
-
             return CreatedAtAction(nameof(Get), new { id = createdComment.Id }, createdComment);
         }
 
@@ -66,6 +66,30 @@ namespace Web.Controllers
             }
             return Ok(comments);
         }
+
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public IActionResult Update(int id, [FromBody]string comment )
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return Unauthorized(new { Message = "Usuario no identificado" });
+            }
+            int userId = int.Parse(userIdClaim.Value);
+            var updated = _commentService.UpdateComment(id, comment, userId );
+            if (updated == null)
+            {
+                return BadRequest(); 
+            }
+            return NoContent();
+        }
+
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)

@@ -1,4 +1,4 @@
-﻿using Application.Models.Requests;
+﻿using Application.Models.Requests.Moderators;
 using Application.Models.Responses;
 using Domain.Entities;
 using System;
@@ -11,7 +11,7 @@ namespace Application.Interfaces
 {
     public interface IModeratorService
     {
-        Moderator CreateModerator(CreateModeratorDTO createModeratorDTO);
+        Moderator? CreateModerator(CreateModeratorDTO createModeratorDTO);
 
         List<ModeratorDTO> GetAllModerators();
 

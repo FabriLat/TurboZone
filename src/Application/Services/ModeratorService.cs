@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces;
-using Application.Models.Requests;
+using Application.Models.Requests.Moderators;
 using Application.Models.Responses;
 using Domain.Entities;
 using Domain.Enums;
@@ -22,11 +22,12 @@ namespace Application.Services
 
        public  Moderator? CreateModerator(CreateModeratorDTO dto)
         {
-            if (dto.FullName.Trim().Length > 4 && dto.Password.Trim().ToLower().Length > 6)
+            if (dto.FullName.Trim().Length > 4 && dto.Password.Trim().ToLower().Length > 6 && dto.Password == dto.ConfirmPassword)
             {
                 Moderator moderator = new Moderator();
                 moderator.FullName = dto.FullName;
                 moderator.Email = dto.Email;
+                moderator.phoneNumber = dto.PhoneNumber;
                 moderator.Password = dto.Password;
                 moderator.Location = dto.Location;
                 moderator.Rol = UserRol.Moderator;
@@ -56,10 +57,11 @@ namespace Application.Services
             Moderator? moderatorToModify = _moderatorRepository.GetById(id);
             if (moderatorToModify != null) 
             {
-              if (dto.FullName.Trim().Length > 4 && dto.Password.Trim().ToLower().Length > 6)
+              if (dto.FullName.Trim().Length > 4 && dto.Password.Trim().Length > 6)
                 {
                 moderatorToModify.FullName = dto.FullName;
                 moderatorToModify.Email = dto.Email;
+                moderatorToModify.phoneNumber = dto.PhoneNumber;
                 moderatorToModify.Password = dto.Password;
                 moderatorToModify.Location = dto.Location;
                 _moderatorRepository.Update(moderatorToModify);

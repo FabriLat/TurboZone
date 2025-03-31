@@ -1,4 +1,4 @@
-﻿using Application.Models.Requests;
+﻿using Application.Models.Requests.Comments;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,6 +13,8 @@ namespace Application.Interfaces
         Comment? AddComment(int userId, CreateCommentDTO commentDTO);
 
         Comment? GetComment(int id);
+
+        Comment? UpdateComment(int commentId, string comment, int userId);
 
         bool DeleteComment(int userId, int commentId);
 

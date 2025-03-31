@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces;
-using Application.Models.Requests;
+using Application.Models.Requests.Images;
 using Application.Models.Responses;
 using Domain.Entities;
 using Domain.Enums;

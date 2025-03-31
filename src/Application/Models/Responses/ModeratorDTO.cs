@@ -19,8 +19,8 @@ namespace Application.Models.Responses
             dto.Id = moderator.Id;
             dto.FullName = moderator.FullName;
             dto.Email = moderator.Email;
+            dto.PhoneNumber = moderator.phoneNumber;
             dto.Location = moderator.Location;
-            dto.ImageUrl = moderator.ImageUrl;
             dto.Rol = moderator.Rol;    
             dto.State = moderator.State;
             return dto;

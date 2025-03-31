@@ -1,4 +1,4 @@
-﻿using Application.Models.Requests;
+﻿using Application.Models.Requests.Images;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;

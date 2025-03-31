@@ -8,20 +8,25 @@ using System.Threading.Tasks;
 
 namespace Application.Models.Requests
 {
-    public class CreateClientDTO
+    public class CreateUserDTO
     {
+        [Required]
         public string FullName { get; set; }
 
         [Required]
         [EmailAddress(ErrorMessage = "Invalid email adress")]
         public string Email { get; set; }
 
+        [Required]
+        public string PhoneNumber { get; set; }
+
+        [Required]
         public string Password { get; set; }
 
+        [Required]
         public string ConfirmPassword { get; set; }
 
+        [Required]
         public string Location { get; set; }
-
-        public UserRol Rol  = UserRol.Client;
     }
 }

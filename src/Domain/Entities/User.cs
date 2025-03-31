@@ -24,6 +24,9 @@ namespace Domain.Entities
         public string Email { get; set; }
 
         [Required]
+        public string phoneNumber { get; set; }
+
+        [Required]
         [StringLength(20, MinimumLength = 8, ErrorMessage = "Password should be at least 8 characters.")]
         public string Password { get; set; }
 

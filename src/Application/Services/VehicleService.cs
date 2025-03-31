@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
-using Application.Models.Requests;
+using Application.Models.Requests.Images;
+using Application.Models.Requests.Vehicles;
 using Application.Models.Responses;
 using Domain.Entities;
 using Domain.Enums;
@@ -34,7 +35,7 @@ namespace Application.Services
                 string.IsNullOrWhiteSpace(vehicle.Color) ||
                 string.IsNullOrWhiteSpace(vehicle.Transmission) ||
                 string.IsNullOrWhiteSpace(vehicle.Price.ToString()) ||
-                string.IsNullOrWhiteSpace(vehicle.Price.ToString()))
+                string.IsNullOrWhiteSpace(vehicle.MaxSpeed.ToString()))
             {
                 return null;
             }
@@ -82,7 +83,6 @@ namespace Application.Services
         {
             List<VehicleDTO> vehicleDTOs = new List<VehicleDTO>();
             var vehicles = _vehicleRepository.GetActiveVehicles();
-
             foreach (var vehicle in vehicles)
             {
                 VehicleDTO vehicleDTO = VehicleDTO.Create(vehicle);
@@ -90,8 +90,6 @@ namespace Application.Services
             }
             return vehicleDTOs;
         }
-
-
 
         public VehicleDTO? GetVehicleById(int id)
         {
@@ -118,7 +116,6 @@ namespace Application.Services
                 return null;
             }
 
-
             Vehicle? vehicleToUpdate = _vehicleRepository.GetById(vehicleId);
             if (vehicleToUpdate != null && vehicleToUpdate.OwnerId == userId)
             {
@@ -136,6 +133,7 @@ namespace Application.Services
             return null;
         }
 
+
         public List<VehicleDTO> GetPendingVehicles()
         {
             var pendingVehicles = _vehicleRepository.GetPendingCreateVehicles();
@@ -150,10 +148,10 @@ namespace Application.Services
                 return vehicleDTOs;
             }
             return null;
-
         }
 
-        public List<VehicleDTO> GetPendingUpdateVehicles()
+
+        public List<VehicleDTO>? GetPendingUpdateVehicles()
         {
             var pendingVehicles = _vehicleRepository.GetPendingUpdateVehicles();
             List<VehicleDTO> vehicleDTOs = new List<VehicleDTO>();
@@ -167,8 +165,8 @@ namespace Application.Services
                 return vehicleDTOs;
             }
             return null;
-
         }
+
 
         public bool ChangeVehicleState(int id, string newState)
         {
@@ -187,6 +185,5 @@ namespace Application.Services
             }
             return false;
         }
-
     }
 }
