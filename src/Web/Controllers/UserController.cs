@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace Web.Controllers
 {
-    [Route("api/[action]s")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class UserController : ControllerBase
     {

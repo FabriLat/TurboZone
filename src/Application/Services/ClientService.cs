@@ -115,7 +115,6 @@ namespace Application.Services
 
             if(user != null && clientToDelete != null)
             {
-                Console.WriteLine(user.FullName +" " + user.Id + " y " + clientToDelete.FullName + " "+ clientToDelete.Id);
                 if (user.Rol == UserRol.Moderator || user.Rol == UserRol.SysAdmin)
                 {
                     _clientRepository.Delete(clientToDelete);

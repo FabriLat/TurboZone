@@ -22,7 +22,7 @@ namespace Infrastructure.Data
             var appDbContext = (ApplicationContext)_dbContext;
 
             return appDbContext.Vehicles
-                .Include(v => v.Images) // Incluye las imágenes
+                .Include(v => v.Images)
                 .Where(v => v.State == VehicleState.PendingCreate)
                 .ToList();
         }
