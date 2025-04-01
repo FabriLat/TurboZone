@@ -393,10 +393,6 @@ FodyWeavers.xsd
 *.sln.iml
 
 
-appsettings.json
-appsettings.*.json
-.env
-
 # MySQL backups o scripts
 *.sql
 
