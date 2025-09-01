@@ -19,6 +19,17 @@ namespace Web.Controllers
         }
 
 
+        /// <summary>
+        /// Sube una nueva imagen.
+        /// </summary>
+        /// <param name="imageDTO">Objeto con los datos necesarios para subir la imagen.</param>
+        /// <returns>Respuesta exitosa si la imagen se sube correctamente.</returns>
+        /// <response code="200">Imagen subida correctamente.</response>
+        /// <response code="400">Datos inválidos.</response>
+        /// <response code="401">No autorizado: se requiere un token JWT válido.</response>
+        /// <remarks>
+        /// Este endpoint permite a los usuarios autenticados subir una nueva imagen.
+        /// </remarks>
         [HttpPost]
         public IActionResult UploadImage([FromBody] UploadImageDTO imageDTO)
         {
@@ -34,8 +45,21 @@ namespace Web.Controllers
                 }
                 return Unauthorized();
             }
-          
 
+
+        /// <summary>
+        /// Actualiza los datos de una imagen existente.
+        /// </summary>
+        /// <param name="id">ID de la imagen a actualizar.</param>
+        /// <param name="imageDTO">Nuevo objeto con los datos de la imagen.</param>
+        /// <returns>Respuesta exitosa si la imagen se actualiza correctamente.</returns>
+        /// <response code="200">Imagen actualizada correctamente.</response>
+        /// <response code="400">Datos inválidos.</response>
+        /// <response code="401">No autorizado: se requiere un token JWT válido.</response>
+        /// <response code="404">Imagen no encontrada.</response>
+        /// <remarks>
+        /// Este endpoint permite actualizar los datos de una imagen. El usuario debe estar autenticado.
+        /// </remarks>
         [HttpPut("{id}")]
         public IActionResult UpdateImage(int id, [FromBody]UpdateImageDTO imageDTO)
         {
@@ -53,6 +77,17 @@ namespace Web.Controllers
         }
 
 
+        /// <summary>
+        /// Elimina una imagen.
+        /// </summary>
+        /// <param name="id">ID de la imagen a eliminar.</param>
+        /// <returns>Respuesta exitosa si la imagen se elimina correctamente.</returns>
+        /// <response code="200">Imagen eliminada correctamente.</response>
+        /// <response code="400">No se pudo eliminar la imagen.</response>
+        /// <response code="401">No autorizado: se requiere un token JWT válido.</response>
+        /// <remarks>
+        /// Este endpoint permite a los usuarios autenticados eliminar una imagen.
+        /// </remarks>
         [HttpDelete("{id}")]
         public IActionResult DeleteImage(int id)
         {

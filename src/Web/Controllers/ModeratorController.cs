@@ -19,6 +19,16 @@ namespace Web.Controllers
         }
 
 
+        /// <summary>
+        /// Crea un nuevo moderador.
+        /// </summary>
+        /// <param name="createModerator">Objeto con los datos necesarios para crear el moderador.</param>
+        /// <returns>El moderador creado si la operación es exitosa.</returns>
+        /// <response code="201">Moderador creado correctamente.</response>
+        /// <response code="400">Datos inválidos o no se pudo crear el moderador.</response>
+        /// <remarks>
+        /// Este endpoint requiere que el usuario sea un administrador del sistema (SysAdmin). Solo los SysAdmins pueden crear moderadores.
+        /// </remarks>
         [HttpPost]
         public ActionResult CreateModerator([FromBody] CreateModeratorDTO createModerator)
         {
@@ -34,7 +44,15 @@ namespace Web.Controllers
             return BadRequest();  
         }
 
-
+        /// <summary>
+        /// Obtiene la lista de todos los moderadores.
+        /// </summary>
+        /// <returns>Lista de moderadores registrados.</returns>
+        /// <response code="200">Lista de moderadores obtenida correctamente.</response>
+        /// <response code="401">No autorizado: se requiere un token JWT válido.</response>
+        /// <remarks>
+        /// Este endpoint requiere autenticación JWT. Solo los moderadores y administradores del sistema pueden acceder a esta información.
+        /// </remarks>
         [HttpGet]
         [Authorize(Policy = "ModeratorAndSysAdmin")]
         public List<ModeratorDTO> GetAll()
@@ -43,6 +61,18 @@ namespace Web.Controllers
         }
 
 
+        /// <summary>
+        /// Actualiza los datos de un moderador existente.
+        /// </summary>
+        /// <param name="id">ID del moderador a actualizar.</param>
+        /// <param name="updateModerator">Objeto con los nuevos datos del moderador.</param>
+        /// <returns>Sin contenido si la actualización fue exitosa.</returns>
+        /// <response code="204">Moderador actualizado correctamente.</response>
+        /// <response code="400">Datos inválidos.</response>
+        /// <response code="404">Moderador no encontrado.</response>
+        /// <remarks>
+        /// Este endpoint permite a los administradores actualizar los datos de un moderador.
+        /// </remarks>  
         [HttpPut("{id}")]
         public ActionResult Update(int id,[FromBody]UpdateModeratorDTO updateModerator)
         {
@@ -59,6 +89,16 @@ namespace Web.Controllers
         }
 
 
+        /// <summary>
+        /// Elimina un moderador.
+        /// </summary>
+        /// <param name="id">ID del moderador a eliminar.</param>
+        /// <returns>Respuesta exitosa si el moderador fue eliminado correctamente.</returns>
+        /// <response code="200">Moderador eliminado correctamente.</response>
+        /// <response code="404">Moderador no encontrado.</response>
+        /// <remarks>
+        /// Este endpoint permite a los administradores eliminar moderadores.
+        /// </remarks>
         [HttpDelete("{id}")]
         public ActionResult DeleteModerator([FromRoute]int id)
         {

@@ -37,6 +37,10 @@ builder.Services.AddSwaggerGen(setupAction =>
                     Id = "API-TurboZoneBearerAuth" } //Tiene que coincidir con el id seteado arriba en la definición
                 }, new List<string>() }
     });
+
+    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    setupAction.IncludeXmlComments(xmlPath);
 });
 
 
