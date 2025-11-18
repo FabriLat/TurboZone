@@ -19,46 +19,72 @@ namespace Application.Services
 
         private readonly IVehicleRepository _vehicleRepository;
         private readonly IImageService _imageService;
-        public VehicleService(IVehicleRepository vehicleRepository, IImageService imageService)
+        private readonly IFeatureRepository _featureRepository;
+
+        public VehicleService(IVehicleRepository vehicleRepository, IImageService imageService, IFeatureRepository featureRepository)
         {
             _vehicleRepository = vehicleRepository;
             _imageService = imageService;
+            _featureRepository = featureRepository;
         }
 
         public VehicleDTO? CreateVehicle(CreateVehicleDTO vehicle, int userId)
-        {
-            Vehicle newVehicle = new Vehicle();
-            UploadImageDTO uploadImage = new UploadImageDTO();
-            if(userId < 0 || string.IsNullOrWhiteSpace(vehicle.Brand) ||
-                string.IsNullOrWhiteSpace(vehicle.Model) ||
-                string.IsNullOrWhiteSpace(vehicle.Year) ||
-                string.IsNullOrWhiteSpace(vehicle.Color) ||
-                string.IsNullOrWhiteSpace(vehicle.Transmission) ||
-                string.IsNullOrWhiteSpace(vehicle.Price.ToString()) ||
-                string.IsNullOrWhiteSpace(vehicle.MaxSpeed.ToString()))
+{
+    // Validaciones básicas
+    if (userId < 0 ||
+        string.IsNullOrWhiteSpace(vehicle.Brand) ||
+        string.IsNullOrWhiteSpace(vehicle.Model) ||
+        string.IsNullOrWhiteSpace(vehicle.Year) ||
+        string.IsNullOrWhiteSpace(vehicle.Color) ||
+        string.IsNullOrWhiteSpace(vehicle.Transmission) ||
+        vehicle.Price <= 0 ||
+        vehicle.MaxSpeed <= 0)
+    {
+        return null;
+    }
+
+    var newVehicle = new Vehicle
+    {
+        Brand = vehicle.Brand,
+        Model = vehicle.Model,
+        Year = vehicle.Year,
+        Color = vehicle.Color,
+        Transmission = vehicle.Transmission,
+        MaxSpeed = vehicle.MaxSpeed,
+        Price = vehicle.Price,
+        OwnerId = userId,
+        State = VehicleState.PendingCreate
+    };
+
+    // Guardamos el vehículo primero para obtener su Id
+    var createdVehicle = _vehicleRepository.Add(newVehicle);
+
+            // Asociar las Features (relación N–N)
+            if (vehicle.FeatureIds != null && vehicle.FeatureIds.Count > 0)
             {
-                return null;
+                var existingFeatures = _featureRepository.GetFeaturesByIds(vehicle.FeatureIds);
+
+                createdVehicle.Features = existingFeatures;
+                _vehicleRepository.Update(createdVehicle);
             }
 
-            newVehicle.Brand=vehicle.Brand;
-            newVehicle.Model=vehicle.Model;
-            newVehicle.Year=vehicle.Year;
-            newVehicle.Color=vehicle.Color;
-            newVehicle.Transmission=vehicle.Transmission;
-            newVehicle.MaxSpeed=vehicle.MaxSpeed;
-            newVehicle.Price=vehicle.Price;
-            newVehicle.OwnerId = userId;
-            newVehicle.State = VehicleState.PendingCreate;
-            var createdVehicle = _vehicleRepository.Add(newVehicle);
-            
-            uploadImage.VehicleId = createdVehicle.Id;
-            uploadImage.ImageName=vehicle.ImageName;
-            uploadImage.ImageUrl = vehicle.ImageUrl;
-            _imageService.UploadImage(uploadImage , userId);
 
-            VehicleDTO vehicleDTO = VehicleDTO.Create(newVehicle);
-            return vehicleDTO;
-        }
+            // Guardar la imagen (si viene)
+            if (!string.IsNullOrWhiteSpace(vehicle.ImageUrl))
+    {
+        var uploadImage = new UploadImageDTO
+        {
+            VehicleId = createdVehicle.Id,
+            ImageName = vehicle.ImageName,
+            ImageUrl = vehicle.ImageUrl
+        };
+
+        _imageService.UploadImage(uploadImage, userId);
+    }
+
+    return VehicleDTO.Create(createdVehicle);
+}
+
 
         public void DeleteVehicle(int id)
         {
@@ -104,19 +130,18 @@ namespace Application.Services
 
         public Vehicle? UpdateVehicle(UpdateVehicleDTO vehicle, int userId, int vehicleId)
         {
-
             if (userId < 0 || string.IsNullOrWhiteSpace(vehicle.Brand) ||
                 string.IsNullOrWhiteSpace(vehicle.Model) ||
                 string.IsNullOrWhiteSpace(vehicle.Year) ||
                 string.IsNullOrWhiteSpace(vehicle.Color) ||
                 string.IsNullOrWhiteSpace(vehicle.Transmission) ||
-                string.IsNullOrWhiteSpace(vehicle.Price.ToString()) ||
-                string.IsNullOrWhiteSpace(vehicle.Price.ToString()))
+                vehicle.Price <= 0 || vehicle.MaxSpeed <= 0)
             {
                 return null;
             }
 
             Vehicle? vehicleToUpdate = _vehicleRepository.GetById(vehicleId);
+
             if (vehicleToUpdate != null && vehicleToUpdate.OwnerId == userId)
             {
                 vehicleToUpdate.Brand = vehicle.Brand;
@@ -127,11 +152,26 @@ namespace Application.Services
                 vehicleToUpdate.MaxSpeed = vehicle.MaxSpeed;
                 vehicleToUpdate.Price = vehicle.Price;
                 vehicleToUpdate.State = VehicleState.PendingUpdate;
+
+                // ✅ Actualizar features correctamente
+                vehicleToUpdate.Features.Clear();
+
+                if (vehicle.FeaturesIds != null && vehicle.FeaturesIds.Any())
+                {
+                    var existingFeatures = _featureRepository.GetFeaturesByIds(vehicle.FeaturesIds);
+                    foreach (var feature in existingFeatures)
+                    {
+                        vehicleToUpdate.Features.Add(feature);
+                    }
+                }
+
                 _vehicleRepository.Update(vehicleToUpdate);
                 return vehicleToUpdate;
             }
+
             return null;
         }
+
 
 
         public List<VehicleDTO> GetPendingVehicles()

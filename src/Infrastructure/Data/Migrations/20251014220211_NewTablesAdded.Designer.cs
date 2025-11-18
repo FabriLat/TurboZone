@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20251014220211_NewTablesAdded")]
+    partial class NewTablesAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,11 +97,11 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.Specification", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("IdSpecifications")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdSpecifications"));
 
                     b.Property<string>("Acceleration")
                         .HasColumnType("longtext");
@@ -131,7 +134,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Weight")
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdSpecifications");
 
                     b.HasIndex("VehicleId");
 
@@ -278,20 +281,20 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("VehicleViews");
+                    b.ToTable("VehicleView");
                 });
 
-            modelBuilder.Entity("VehicleFeatures", b =>
+            modelBuilder.Entity("FeatureVehicle", b =>
                 {
-                    b.Property<int>("VehicleId")
+                    b.Property<int>("FeaturesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("FeatureId")
+                    b.Property<int>("VehiclesId")
                         .HasColumnType("int");
 
-                    b.HasKey("VehicleId", "FeatureId");
+                    b.HasKey("FeaturesId", "VehiclesId");
 
-                    b.HasIndex("FeatureId");
+                    b.HasIndex("VehiclesId");
 
                     b.ToTable("VehicleFeatures", (string)null);
                 });
@@ -381,21 +384,19 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Vehicle");
                 });
 
-            modelBuilder.Entity("VehicleFeatures", b =>
+            modelBuilder.Entity("FeatureVehicle", b =>
                 {
                     b.HasOne("Domain.Entities.Feature", null)
                         .WithMany()
-                        .HasForeignKey("FeatureId")
+                        .HasForeignKey("FeaturesId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_VehicleFeatures_Features_FeatureId");
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.Vehicle", null)
                         .WithMany()
-                        .HasForeignKey("VehicleId")
+                        .HasForeignKey("VehiclesId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_VehicleFeatures_Vehicles_VehicleId");
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Vehicle", b =>

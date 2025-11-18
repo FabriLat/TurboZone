@@ -44,12 +44,26 @@ namespace Domain.Entities
 
         public List<Image> Images { get; set; }
 
+        public List<Feature> Features { get; set; }
+
+        public List<Specification> Specifications { get; set; }
+
         public List<Comment> Comments { get; set; }
+
+        public List<VehicleLike> VehicleLikes { get; set; }
+
+        public List<VehicleView> VehicleViews { get; set; }
+
+
 
         public Vehicle()
         {
             Images = new List<Image>();
             Comments = new List<Comment>();
+            Features = new List<Feature>();
+            Specifications = new List<Specification>();
+            VehicleLikes = new List<VehicleLike>();
+            VehicleViews = new List<VehicleView>();
         }
 
         public Vehicle(int id, string brand, string model, string year, string color, string transmission, decimal price, int sellerId)
@@ -64,6 +78,10 @@ namespace Domain.Entities
             OwnerId = sellerId;
             Images = new List<Image>();
             Comments = new List<Comment>();
+            Specifications = new List<Specification>();
+            Features = new List<Feature>();
+            VehicleLikes = new List<VehicleLike>();
+            VehicleViews = new List<VehicleView>();
         }
     }
 }

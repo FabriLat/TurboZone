@@ -43,6 +43,7 @@ namespace Infrastructure.Data
             var appDbContext = (ApplicationContext)_dbContext;
             return appDbContext.Vehicles
              .Include(v => v.Images) 
+             .Include(f => f.Features)
             .FirstOrDefault(v => v.Id == id);
         }
 
@@ -66,6 +67,31 @@ namespace Infrastructure.Data
             var appDbContext = (ApplicationContext)_dbContext;
             return appDbContext.Vehicles.Include(v => v.Images).ToList();
             
+        }
+
+
+        public void AddFeaturesToVehicle(int vehicleId, List<int> featureIds)
+        {
+            var appDbContext = (ApplicationContext)_dbContext;
+            var vehicle = appDbContext.Vehicles
+                .Include(v => v.Features)
+                .FirstOrDefault(v => v.Id == vehicleId);
+
+            if (vehicle == null) return;
+
+            var features = appDbContext.Features
+                .Where(f => featureIds.Contains(f.Id))
+                .ToList();
+
+            foreach (var feature in features)
+            {
+                if (!vehicle.Features.Contains(feature))
+                {
+                    vehicle.Features.Add(feature);
+                }
+            }
+
+            appDbContext.SaveChanges();
         }
 
 

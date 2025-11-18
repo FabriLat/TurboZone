@@ -26,5 +26,7 @@ namespace Application.Models.Requests.Vehicles
         public decimal MaxSpeed { get; set; }
 
         public decimal Price { get; set; }
+
+        public List<int> FeatureIds { get; set; } = new List<int>();
     }
 }
