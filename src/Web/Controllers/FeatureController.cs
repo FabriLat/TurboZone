@@ -14,6 +14,16 @@ namespace Web.Controllers
             _featureService = featureService;
         }
 
+
+
+        /// <summary>
+        /// Obtiene la lista de features disponibles.
+        /// </summary>
+        /// <returns>Listado de features.</returns>
+        /// <response code="200">Lista de features obtenida correctamente.</response>
+        /// <remarks>
+        /// Este endpoint devuelve las features previamente cargadas.
+        /// </remarks>
         [HttpGet]
         public ActionResult GetAllFeatures()
         {

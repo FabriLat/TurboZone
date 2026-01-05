@@ -14,11 +14,13 @@ namespace Application.Services
     public class SpecificationService : ISpecificationService
     {
         private readonly IVehicleService _vehicleService;
+        private readonly IUserService _userService;
         private readonly ISpecificationRepository _specificationRepository;
-        public SpecificationService(IVehicleService vehicleService, ISpecificationRepository specificationRepository)
+        public SpecificationService(IVehicleService vehicleService, ISpecificationRepository specificationRepository, IUserService userService)
         {
             _vehicleService = vehicleService;
             _specificationRepository = specificationRepository;
+            _userService = userService;
         }
 
         public bool AddSpecification(SpecificationDTO dto)
@@ -29,21 +31,33 @@ namespace Application.Services
             {
                 return false;
             }
-            Specification specification = new Specification
+            var user = _userService.GetUserById(vehicle.SellerId);
+            if (user == null)
             {
-                Engine = dto.Engine,
-                Power = dto.Power,
-                Torque = dto.Torque,
-                Acceleration = dto.Acceleration,
-                FuelConsumption = dto.FuelConsumption,
-                Co2Emissions = dto.Co2Emissions,
-                Doors = dto.Doors,
-                Seats = dto.Seats,
-                Weight = dto.Weight,
-                VehicleId = dto.VehicleId
-            };
+                return false;
+            }
+            if(user.Id == vehicle.SellerId || user.Rol == Domain.Enums.UserRol.Moderator || user.Rol == Domain.Enums.UserRol.SysAdmin)
+            {
+                Specification specification = new Specification
+                {
+                    Engine = dto.Engine,
+                    Power = dto.Power,
+                    Torque = dto.Torque,
+                    Acceleration = dto.Acceleration,
+                    FuelConsumption = dto.FuelConsumption,
+                    Co2Emissions = dto.Co2Emissions,
+                    Doors = dto.Doors,
+                    Seats = dto.Seats,
+                    Weight = dto.Weight,
+                    VehicleId = dto.VehicleId
+                };
                 _specificationRepository.AddSpecification(specification);
                 return true;
+            }
+            return false;
+
+
+           
 
         }
 

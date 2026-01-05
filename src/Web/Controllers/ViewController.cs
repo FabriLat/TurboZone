@@ -15,6 +15,16 @@ namespace Web.Controllers
             _viewService = viewService;
         }
 
+        /// <summary>
+        /// Registra una visualización de un vehículo.
+        /// </summary>
+        /// <param name="vehicleId">ID del vehículo visualizado.</param>
+        /// <returns>Respuesta sin contenido.</returns>
+        /// <response code="204">Visualización registrada correctamente.</response>
+        /// <remarks>
+        /// Este endpoint registra una vista del vehículo.
+        /// Si el usuario no está autenticado, la vista se registra como anónima.
+        /// </remarks>
         [HttpPost("{vehicleId}")]
         public ActionResult ViewVehicle(int vehicleId)
         {
@@ -28,6 +38,15 @@ namespace Web.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Obtiene el total de visualizaciones de un vehículo.
+        /// </summary>
+        /// <param name="vehicleId">ID del vehículo.</param>
+        /// <returns>Total de visualizaciones.</returns>
+        /// <response code="200">Cantidad de visualizaciones obtenida correctamente.</response>
+        /// <remarks>
+        /// Este endpoint devuelve la cantidad total de vistas de un vehículo.
+        /// </remarks>
         [HttpGet("{vehicleId}")]
         public int Get(int vehicleId)
         {

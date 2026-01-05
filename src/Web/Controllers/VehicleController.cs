@@ -74,14 +74,14 @@ namespace Web.Controllers
         /// Este endpoint permite obtener la información detallada de un vehículo mediante su ID.
         /// </remarks>
         [HttpGet("{id}")]
-        public VehicleDTO? Get([FromRoute]int id)
+        public IActionResult Get([FromRoute]int id)
         {
                 VehicleDTO? vehicleDto =  _vehicleService.GetVehicleById(id);
                 if (vehicleDto != null)
                 {
-                    return vehicleDto;
+                    return Ok(vehicleDto);
                 }
-                return null;
+                return StatusCode(404);
         }
 
 

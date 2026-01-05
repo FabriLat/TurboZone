@@ -120,11 +120,19 @@ namespace Application.Services
         public VehicleDTO? GetVehicleById(int id)
         {
             Vehicle? vehicle = _vehicleRepository.GetById(id);
-            if (vehicle != null)
+
+            if(vehicle == null || vehicle.State != VehicleState.Active)
+            {
+                return null;
+            }
+
+            if (vehicle != null && vehicle.State == VehicleState.Active)
             {
                 VehicleDTO dto = VehicleDTO.Create(vehicle);
                 return dto;
             }
+
+
             return null;
         }
 
@@ -214,13 +222,18 @@ namespace Application.Services
             if (vehicle != null)
             {
                 if (newState == "Active")
-                { 
-                vehicle.State = VehicleState.Active;
-                }else if(newState == "Pending")
+                {
+                    vehicle.State = VehicleState.Active;
+                } else if (newState == "Pending")
                 {
                     vehicle.State = VehicleState.PendingUpdate;
+                } else if (newState == "Inactive")
+                {
+                    vehicle.State = VehicleState.Inactive;
                 }
-                _vehicleRepository.Update(vehicle);
+
+
+                    _vehicleRepository.Update(vehicle);
                 return true;
             }
             return false;
