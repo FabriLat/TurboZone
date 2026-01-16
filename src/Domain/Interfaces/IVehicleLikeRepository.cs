@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces
 {
-    public interface ILikeRepository : IRepositoryBase<VehicleLike>
+    public interface IVehicleLikeRepository : IRepositoryBase<VehicleLike>
     {
         VehicleLike? GetLikeByVehicleAndUser(int vehicleId, int userId);
+
+        int GetLikesByVehicleId(int vehicleId);
     }
 }

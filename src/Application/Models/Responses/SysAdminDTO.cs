@@ -11,7 +11,7 @@ namespace Application.Models.Responses
 {
     public class SysAdminDTO : UserDTO
     {
-
+        public string ImageUrl { get; set; }
         public static SysAdminDTO Create(SysAdmin sysAdmin)
         {
             SysAdminDTO sysAdminDTO = new SysAdminDTO();
@@ -19,6 +19,7 @@ namespace Application.Models.Responses
             sysAdminDTO.Email = sysAdmin.Email;
             sysAdminDTO.PhoneNumber = sysAdmin.phoneNumber;
             sysAdminDTO.Location = sysAdmin.Location;
+            sysAdminDTO.ImageUrl = sysAdmin.ImageUrl;
             return sysAdminDTO;
         }
 

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    public class LikeRepository :  RepositoryBase<VehicleLike>, ILikeRepository
+    public class VehicleLikeRepository :  RepositoryBase<VehicleLike>, IVehicleLikeRepository
     {
-        public LikeRepository(ApplicationContext context) : base(context)
+        public VehicleLikeRepository(ApplicationContext context) : base(context)
         {
         }
 
@@ -19,6 +19,12 @@ namespace Infrastructure.Data
             var appDbContext = (ApplicationContext)_dbContext;
             var like = appDbContext.VehicleLikes.FirstOrDefault(l => l.VehicleId == vehicleId && l.UserId == userId);
             return like;
+        }
+
+        public int GetLikesByVehicleId(int vehicleId)
+        {
+            var appDbContext = (ApplicationContext)_dbContext;
+            return appDbContext.VehicleLikes.Count(l => l.VehicleId == vehicleId);
         }
 
 

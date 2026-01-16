@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20251030234705_AddVehicleFeaturesRelation")]
-    partial class AddVehicleFeaturesRelation
+    [Migration("20260114150750_InitialClean")]
+    partial class InitialClean
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,8 +116,14 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Fuel")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("FuelConsumption")
                         .HasColumnType("longtext");
+
+                    b.Property<int?>("Kilometers")
+                        .HasColumnType("int");
 
                     b.Property<string>("Power")
                         .HasColumnType("longtext");
@@ -202,6 +208,13 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("longtext");
 

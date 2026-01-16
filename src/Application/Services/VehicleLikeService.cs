@@ -9,12 +9,18 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class LikeService : ILikeService
+    public class VehicleLikeService : IVehicleLikeService
     {
-        private readonly ILikeRepository _likeRepository;
-        public LikeService(ILikeRepository likeRepository)
+        private readonly IVehicleLikeRepository _likeRepository;
+        public VehicleLikeService(IVehicleLikeRepository likeRepository)
         {
             _likeRepository = likeRepository;
+        }
+
+
+        public int GetTotalLikes(int vehicleId)
+        {
+            return _likeRepository.GetLikesByVehicleId(vehicleId);
         }
 
         public bool LikeVehicle(int vehicleId, int userId)
@@ -45,6 +51,12 @@ namespace Application.Services
                 return true;
             }
             return false;
+        }
+
+        public bool IsVehicleLikedByUser(int vehicleId, int userId)
+        {
+            VehicleLike? like = _likeRepository.GetLikeByVehicleAndUser(vehicleId, userId);
+            return like != null;
         }
 
     }

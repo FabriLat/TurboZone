@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
 {
-    [Route("api/[controller]s")]
+    [Route("api/vehicle/{vehicleId}/views")]
     [ApiController]
-    public class ViewController : ControllerBase
+    public class VehicleViewController : ControllerBase
     {
 
         private readonly IViewService _viewService;
-        public ViewController(IViewService viewService)
+        public VehicleViewController(IViewService viewService)
         {
             _viewService = viewService;
         }
@@ -25,7 +25,7 @@ namespace Web.Controllers
         /// Este endpoint registra una vista del vehículo.
         /// Si el usuario no está autenticado, la vista se registra como anónima.
         /// </remarks>
-        [HttpPost("{vehicleId}")]
+        [HttpPost]
         public ActionResult ViewVehicle(int vehicleId)
         {
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -34,8 +34,12 @@ namespace Web.Controllers
                 _viewService.LogView(vehicleId, null);
                 return NoContent();
             }
-            _viewService.LogView(vehicleId, int.Parse(userId));
-            return NoContent();
+            else
+            {
+                _viewService.LogView(vehicleId, int.Parse(userId));
+                return NoContent();
+            }
+
         }
 
         /// <summary>
@@ -47,7 +51,7 @@ namespace Web.Controllers
         /// <remarks>
         /// Este endpoint devuelve la cantidad total de vistas de un vehículo.
         /// </remarks>
-        [HttpGet("{vehicleId}")]
+        [HttpGet]
         public int Get(int vehicleId)
         {
             int totalViews = _viewService.GetTotalViewsByVehicle(vehicleId);

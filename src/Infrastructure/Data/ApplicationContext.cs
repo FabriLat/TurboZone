@@ -15,8 +15,12 @@ namespace Infrastructure.Data
         public DbSet<VehicleLike> VehicleLikes { get; set; }
         public DbSet<VehicleView> VehicleViews { get; set; }
 
+        public DbSet<Notifications> Notifications { get; set; }
+
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
+            Console.WriteLine(Database.GetConnectionString());
+            Console.WriteLine("algo");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,6 +31,15 @@ namespace Infrastructure.Data
                 .HasValue<Client>(UserRol.Client)
                 .HasValue<Moderator>(UserRol.Moderator)
                 .HasValue<SysAdmin>(UserRol.SysAdmin);
+
+            /// -------------------------------
+            /// RELACION: Notifications
+            /// -------------------------------
+            modelBuilder.Entity<Notifications>()
+                .HasOne<Client>()
+                .WithMany()
+                .HasForeignKey(n => n.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // -------------------------------
             // RELACIÓN: Comment
@@ -62,6 +75,7 @@ namespace Infrastructure.Data
                 .WithOne()
                 .HasForeignKey(r => r.VehicleId)
                 .OnDelete(DeleteBehavior.Cascade);
+
 
             // ✅ RELACIÓN N–N: Vehicles ↔ Features
             modelBuilder.Entity<Vehicle>()

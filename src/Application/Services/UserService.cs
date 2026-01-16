@@ -35,6 +35,7 @@ namespace Application.Services
                         Email = user.Email,
                         PhoneNumber = user.phoneNumber,
                         Location = user.Location,
+                        ImageUrl = user.ImageUrl
                     },
                     "Moderator" => new ModeratorDTO
                     {
@@ -44,6 +45,8 @@ namespace Application.Services
                         Email = user.Email,
                         PhoneNumber = user.phoneNumber,
                         Location = user.Location,
+                        ImageUrl = user.ImageUrl
+
                     },
                     "SysAdmin" => new SysAdminDTO
                     {
@@ -52,7 +55,8 @@ namespace Application.Services
                         Rol = user.Rol,
                         Email = user.Email,
                         PhoneNumber = user.phoneNumber,
-                        Location = user.Location,  
+                        Location = user.Location,
+                        ImageUrl = user.ImageUrl
 
                     },
                     _ => throw new InvalidOperationException("Rol no soportado")

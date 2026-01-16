@@ -26,7 +26,7 @@ namespace Application.Services
         public bool AddSpecification(SpecificationDTO dto)
         {
             
-            VehicleDTO vehicle = _vehicleService.GetVehicleById(dto.VehicleId);
+            VehicleDTO vehicle = _vehicleService.GetVehicleByIdAnyState(dto.VehicleId);
             if (vehicle == null)
             {
                 return false;
@@ -44,8 +44,9 @@ namespace Application.Services
                     Power = dto.Power,
                     Torque = dto.Torque,
                     Acceleration = dto.Acceleration,
+                    Kilometers = dto.Kilometers,
+                    Fuel = dto.Fuel,
                     FuelConsumption = dto.FuelConsumption,
-                    Co2Emissions = dto.Co2Emissions,
                     Doors = dto.Doors,
                     Seats = dto.Seats,
                     Weight = dto.Weight,
@@ -74,8 +75,9 @@ namespace Application.Services
                 Power = specification.Power,
                 Torque = specification.Torque,
                 Acceleration = specification.Acceleration,
+                Kilometers = specification.Kilometers,
+                Fuel = specification.Fuel,
                 FuelConsumption = specification.FuelConsumption,
-                Co2Emissions = specification.Co2Emissions,
                 Doors = specification.Doors,
                 Seats = specification.Seats,
                 Weight = specification.Weight,

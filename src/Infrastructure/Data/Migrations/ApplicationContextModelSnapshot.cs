@@ -92,6 +92,39 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Images");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Notifications", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId1")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("Domain.Entities.Specification", b =>
                 {
                     b.Property<int>("Id")
@@ -103,9 +136,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Acceleration")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Co2Emissions")
-                        .HasColumnType("longtext");
-
                     b.Property<int?>("Doors")
                         .HasColumnType("int");
 
@@ -113,8 +143,14 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Fuel")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("FuelConsumption")
                         .HasColumnType("longtext");
+
+                    b.Property<int?>("Kilometers")
+                        .HasColumnType("int");
 
                     b.Property<string>("Power")
                         .HasColumnType("longtext");
@@ -199,6 +235,13 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -341,6 +384,21 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Entities.Notifications", b =>
+                {
+                    b.HasOne("Domain.Entities.Client", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", null)
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Entities.Specification", b =>
                 {
                     b.HasOne("Domain.Entities.Vehicle", null)
@@ -396,6 +454,11 @@ namespace Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_VehicleFeatures_Vehicles_VehicleId");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Navigation("Notifications");
                 });
 
             modelBuilder.Entity("Domain.Entities.Vehicle", b =>

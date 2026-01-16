@@ -24,11 +24,20 @@ namespace Application.Services
             _userService = userService;
         }
 
-        public Comment? AddComment(int userId, CreateCommentDTO commentDTO)
+        public Comment? AddComment(int userId,int vehicleId, CreateCommentDTO commentDTO)
         {
-           Comment newComment = new Comment();
+
+            VehicleDTO? vehicle = _vehicleService.GetVehicleById(vehicleId);
+
+            if (vehicle == null || vehicle.State != VehicleState.Active)
+            {
+                return null;
+            }
+
+
+            Comment newComment = new Comment();
             newComment.UserId = userId;
-            newComment.VehicleId = commentDTO.VehicleId;
+            newComment.VehicleId = vehicleId;
             newComment.Text = commentDTO.Text;  
             _commentRepository.Add(newComment);
             return newComment;

@@ -38,6 +38,11 @@ namespace Domain.Entities
         public decimal Price { get; set; }
 
         [Required]
+        public string Location { get; set; }
+
+        public string? Description { get; set; }
+
+        [Required]
         public int OwnerId { get; set; } //FK para saber quien es el cliente que lo vende
 
         public VehicleState State { get; set; } = VehicleState.Active;
@@ -66,7 +71,7 @@ namespace Domain.Entities
             VehicleViews = new List<VehicleView>();
         }
 
-        public Vehicle(int id, string brand, string model, string year, string color, string transmission, decimal price, int sellerId)
+        public Vehicle(int id, string brand, string model, string year, string color, string transmission, decimal price, int sellerId, string location, string? description)
         {
             Id = id;
             Brand = brand;
@@ -82,6 +87,8 @@ namespace Domain.Entities
             Features = new List<Feature>();
             VehicleLikes = new List<VehicleLike>();
             VehicleViews = new List<VehicleView>();
+            Location = location;
+            Description = description;
         }
     }
 }

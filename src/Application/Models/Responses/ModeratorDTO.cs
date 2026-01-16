@@ -12,7 +12,7 @@ namespace Application.Models.Responses
     public class ModeratorDTO : UserDTO
     {
 
-
+        public string ImageUrl { get; set; }
         public static ModeratorDTO Create(Moderator moderator)
         {
             ModeratorDTO dto = new ModeratorDTO();
@@ -23,6 +23,7 @@ namespace Application.Models.Responses
             dto.Location = moderator.Location;
             dto.Rol = moderator.Rol;    
             dto.State = moderator.State;
+            dto.ImageUrl = moderator.ImageUrl;
             return dto;
         }
 

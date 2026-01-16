@@ -8,8 +8,6 @@ namespace Application.Models.Requests.Comments
 {
     public class CreateCommentDTO
     {
-        public int VehicleId { get; set; }
-
         public string Text { get; set; }
     }
 }

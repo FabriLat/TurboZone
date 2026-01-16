@@ -20,9 +20,11 @@ public partial class Specification
 
     public string? Acceleration { get; set; }
 
-    public string? FuelConsumption { get; set; }
+    public int? Kilometers { get; set; }
 
-    public string? Co2Emissions { get; set; }
+    public string? Fuel { get; set; }
+
+    public string? FuelConsumption { get; set; }
 
     public int? Doors { get; set; }
 

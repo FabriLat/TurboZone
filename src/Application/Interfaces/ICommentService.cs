@@ -10,7 +10,7 @@ namespace Application.Interfaces
 {
     public interface ICommentService
     {
-        Comment? AddComment(int userId, CreateCommentDTO commentDTO);
+        Comment? AddComment(int userId,int vehicleId, CreateCommentDTO commentDTO);
 
         Comment? GetComment(int id);
 

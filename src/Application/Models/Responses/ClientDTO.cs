@@ -10,6 +10,7 @@ namespace Application.Models.Responses
 {
     public class ClientDTO : UserDTO
     {
+        public string? ImageUrl { get; set; }
 
         public static ClientDTO Create(Client client)
         {
@@ -21,6 +22,7 @@ namespace Application.Models.Responses
             clientDTO.Location = client.Location;
             clientDTO.Rol = client.Rol;
             clientDTO.State = client.State;
+            clientDTO.ImageUrl = client.ImageUrl;
             return clientDTO;
         }
     }

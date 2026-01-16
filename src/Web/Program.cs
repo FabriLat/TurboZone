@@ -79,7 +79,7 @@ builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.Configure<AuthenticationServiceOptions>(
   builder.Configuration.GetSection(AuthenticationServiceOptions.AuthenticationService));
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-builder.Services.AddScoped<ILikeService, LikeService>();
+builder.Services.AddScoped<IVehicleLikeService, VehicleLikeService>();
 builder.Services.AddScoped<IFeatureService, FeatureService>();
 builder.Services.AddScoped<ISpecificationService, SpecificationService>();
 builder.Services.AddScoped<IViewService, ViewService>();
@@ -95,7 +95,7 @@ builder.Services.AddScoped<ISysAdminRepository,SysAdminRepository>();
 builder.Services.AddScoped<IUserRepository, RepositoryUser>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
-builder.Services.AddScoped<ILikeRepository, LikeRepository>();
+builder.Services.AddScoped<IVehicleLikeRepository, VehicleLikeRepository>();
 builder.Services.AddScoped<IFeatureRepository, FeatureRepository>();
 builder.Services.AddScoped<ISpecificationRepository, SpecificationRepository>();
 builder.Services.AddScoped<IViewRepository, ViewRepository>();

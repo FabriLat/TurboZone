@@ -23,6 +23,7 @@ namespace Infrastructure.Data
 
             return appDbContext.Vehicles
                 .Include(v => v.Images)
+                .Include(v => v.Features)
                 .Where(v => v.State == VehicleState.PendingCreate)
                 .ToList();
         }
@@ -44,6 +45,8 @@ namespace Infrastructure.Data
             return appDbContext.Vehicles
              .Include(v => v.Images) 
              .Include(f => f.Features)
+             .Include(v => v.VehicleLikes)
+             .Include(v => v.VehicleViews)
             .FirstOrDefault(v => v.Id == id);
         }
 
@@ -54,6 +57,8 @@ namespace Infrastructure.Data
 
             var vehicles = appDbContext.Vehicles
                 .Include(v => v.Images.Take(1))
+                .Include(v => v.VehicleLikes)
+                .Include(v => v.VehicleViews)
                 .Where(v => v.State == VehicleState.Active)
                 .ToList();
 

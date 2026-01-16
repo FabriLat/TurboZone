@@ -31,7 +31,6 @@ namespace Web.Controllers
         /// El acceso está restringido a usuarios autenticados con un token JWT válido.
         /// </remarks>
         [HttpGet("{id}")]
-        [Authorize]
         public ActionResult<UserDTO> Get(int id)
         {
             int currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");

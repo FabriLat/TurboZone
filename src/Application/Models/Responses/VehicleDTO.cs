@@ -28,13 +28,25 @@ namespace Application.Models.Responses
 
         public decimal Price { get; set; }
 
+        public string Location { get; set; }
+
+        public string Description { get; set; }
+
         public VehicleState State { get; set; }
 
         public List<Image> Images { get; set; }
 
+        public List<string> Features { get; set; }
+
+        public int TotalLikes { get; set; }
+
+        public int TotalViews { get; set; }
 
 
-        public static VehicleDTO Create(Vehicle vehicle)
+
+
+
+        public static VehicleDTO Create(Vehicle vehicle, List<string> featuresNames = null)
         {
             VehicleDTO dto = new VehicleDTO
             {
@@ -48,7 +60,12 @@ namespace Application.Models.Responses
                 MaxSpeed = vehicle.MaxSpeed,
                 Price = vehicle.Price,
                 State = vehicle.State,
-                Images = new List<Image>() 
+                Images = new List<Image>(),
+                Description = vehicle.Description,
+                Location = vehicle.Location,
+                Features = featuresNames,
+                TotalLikes = vehicle.VehicleLikes?.Count ?? 0,
+                TotalViews = vehicle.VehicleViews?.Count ?? 0
             };
 
             foreach (var image in vehicle.Images)
