@@ -88,25 +88,7 @@ namespace Application.Services
             return null;
         }
 
-        public bool UpdateClient(UpdateClientDTO updateClientDTO, int id, int userId)
-        {
-            Client? clientToModify = _clientRepository.GetById(id);
-                
-            if (clientToModify != null && clientToModify.Id == userId)
-            {
-                if (updateClientDTO.FullName.Trim().Length > 4 && updateClientDTO.Password.Trim().ToLower().Length > 6)
-                {
-                    clientToModify.FullName = updateClientDTO.FullName;
-                    clientToModify.Email = updateClientDTO.Email;
-                    clientToModify.phoneNumber = updateClientDTO.PhoneNumber;
-                    clientToModify.Password = updateClientDTO.Password;
-                    clientToModify.Location = updateClientDTO.Location;
-                    _clientRepository.Update(clientToModify);
-                    return true;
-                }
-            }
-            return false;  
-        }
+       
 
         public Client? DeleteClient(int id, int userId)
         {

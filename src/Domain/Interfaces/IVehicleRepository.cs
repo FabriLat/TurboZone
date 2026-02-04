@@ -17,6 +17,8 @@ namespace Domain.Interfaces
 
         List<Vehicle> GetActiveVehicles();
 
+        List<Vehicle> GetByOwnerId(int ownerId);
+
         Vehicle? GetById(int id);
     }
 }

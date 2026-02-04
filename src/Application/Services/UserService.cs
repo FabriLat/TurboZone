@@ -1,4 +1,6 @@
 ﻿using Application.Interfaces;
+using Application.Models.Requests;
+using Application.Models.Requests.Clients;
 using Application.Models.Responses;
 using Domain.Entities;
 using Domain.Enums;
@@ -67,5 +69,39 @@ namespace Application.Services
             
             
         }
+
+
+        public bool UpdateUser(int userId, UpdateUserDTO updateUserDTO, int id)
+        {
+            User? userToModify = _userRepository.GetById(id);
+
+            if (userToModify != null && userToModify.Id == userId)
+            {
+                if (updateUserDTO.FullName.Trim().Length > 4 && updateUserDTO.Password.Trim().ToLower().Length > 6 && userToModify.Password == updateUserDTO.Password)
+                {
+                    userToModify.FullName = updateUserDTO.FullName;
+                    userToModify.Email = updateUserDTO.Email;
+                    userToModify.phoneNumber = updateUserDTO.PhoneNumber;
+                    userToModify.ImageUrl = updateUserDTO.ImageUrl;
+                    userToModify.Password = updateUserDTO.NewPassword;
+                    userToModify.Location = updateUserDTO.Location;
+                    _userRepository.Update(userToModify);
+                    return true;
+                }
+                else if (updateUserDTO.FullName.Trim().Length > 4)
+                {
+                    userToModify.FullName = updateUserDTO.FullName;
+                    userToModify.Email = updateUserDTO.Email;
+                    userToModify.phoneNumber = updateUserDTO.PhoneNumber;
+                    userToModify.ImageUrl = updateUserDTO.ImageUrl;
+                    userToModify.Location = updateUserDTO.Location;
+                    _userRepository.Update(userToModify);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
     }
 }

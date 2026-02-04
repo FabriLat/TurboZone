@@ -14,13 +14,12 @@ namespace Infrastructure.Data
         public DbSet<Feature> Features { get; set; }
         public DbSet<VehicleLike> VehicleLikes { get; set; }
         public DbSet<VehicleView> VehicleViews { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
-        public DbSet<Notifications> Notifications { get; set; }
+
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
-            Console.WriteLine(Database.GetConnectionString());
-            Console.WriteLine("algo");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,11 +34,13 @@ namespace Infrastructure.Data
             /// -------------------------------
             /// RELACION: Notifications
             /// -------------------------------
-            modelBuilder.Entity<Notifications>()
-                .HasOne<Client>()
-                .WithMany()
-                .HasForeignKey(n => n.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Notification>()
+            .HasOne(n => n.User)
+            .WithMany()
+            .HasForeignKey(n => n.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
 
             // -------------------------------
             // RELACIÓN: Comment

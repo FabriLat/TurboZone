@@ -1,4 +1,5 @@
-﻿using Application.Models.Responses;
+﻿using Application.Models.Requests;
+using Application.Models.Responses;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,7 @@ namespace Application.Interfaces
     public interface IUserService
     {
         UserDTO? GetUserById(int userId);
+
+        bool UpdateUser(int userId, UpdateUserDTO newUserData, int id);
     }
 }

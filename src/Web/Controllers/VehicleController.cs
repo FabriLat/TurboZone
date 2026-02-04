@@ -84,6 +84,12 @@ namespace Web.Controllers
                 return StatusCode(404);
         }
 
+        [HttpGet("owner/{ownerId:int}")]
+        public ActionResult<List<VehicleDTO>> GetByOwner(int ownerId)
+        {
+            return Ok(_vehicleService.GetByOwnerId(ownerId));
+        }
+
 
         /// <summary>
         /// Obtiene la lista de todos los vehículos activos.

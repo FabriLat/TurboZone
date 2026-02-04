@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Models.Requests;
 using Application.Models.Requests.Clients;
 using Application.Models.Responses;
 using Domain.Entities;
@@ -17,10 +18,12 @@ namespace Web.Controllers
     public class ClientController : ControllerBase
     {
         private readonly IClientService _clientService;
+        private readonly IUserService _userService;
 
-        public ClientController(IClientService clientService)
+        public ClientController(IClientService clientService, IUserService userService)
         {
             _clientService = clientService;
+            _userService = userService;
         }
 
         /// <summary>
@@ -66,35 +69,7 @@ namespace Web.Controllers
             return Ok(clients);
         }
 
-        /// <summary>
-        /// Actualiza los datos de un cliente existente.
-        /// </summary>
-        /// <param name="id">ID del cliente a actualizar.</param>
-        /// <param name="updateClientDTO">Objeto con los datos actualizados del cliente.</param>
-        /// <returns>Sin contenido si la actualización fue exitosa.</returns>
-        /// <response code="204">Cliente actualizado correctamente.</response>
-        /// <response code="400">Datos inválidos.</response>
-        /// <response code="401">No autorizado: se requiere un token JWT válido.</response>
-        /// <response code="404">Cliente no encontrado o no autorizado.</response>
-        /// <remarks>
-        /// Este endpoint requiere autenticación JWT. Solo el propio cliente puede actualizar sus datos.
-        /// </remarks>
-        [HttpPut("{id}")]
-        [Authorize]
-        public ActionResult Update(int id, [FromBody] UpdateClientDTO updateClientDTO)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
-            bool updated = _clientService.UpdateClient(updateClientDTO, id, userId);
-            if (!updated)
-            {
-                return NotFound(new { Message = "Cliente no encontrado o no autorizado" });
-            }
-            return NoContent();
-        }
+
 
         /// <summary>
         /// Elimina un cliente existente.

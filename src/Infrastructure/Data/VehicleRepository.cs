@@ -67,6 +67,16 @@ namespace Infrastructure.Data
         }
 
 
+        public List<Vehicle> GetByOwnerId(int ownerId)
+        {
+            var appDbContext = (ApplicationContext)_dbContext;
+            return appDbContext.Vehicles
+                .Include(v => v.Images)
+                .Where(v => v.OwnerId == ownerId)
+                .ToList();
+        }
+
+
         public List<Vehicle> GetAllVehicles()
         {
             var appDbContext = (ApplicationContext)_dbContext;

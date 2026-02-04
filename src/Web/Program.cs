@@ -83,6 +83,7 @@ builder.Services.AddScoped<IVehicleLikeService, VehicleLikeService>();
 builder.Services.AddScoped<IFeatureService, FeatureService>();
 builder.Services.AddScoped<ISpecificationService, SpecificationService>();
 builder.Services.AddScoped<IViewService, ViewService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 #endregion
 
 
@@ -99,6 +100,7 @@ builder.Services.AddScoped<IVehicleLikeRepository, VehicleLikeRepository>();
 builder.Services.AddScoped<IFeatureRepository, FeatureRepository>();
 builder.Services.AddScoped<ISpecificationRepository, SpecificationRepository>();
 builder.Services.AddScoped<IViewRepository, ViewRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 #endregion
 
 

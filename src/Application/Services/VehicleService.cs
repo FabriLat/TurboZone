@@ -91,6 +91,7 @@ namespace Application.Services
     }
 
 
+
         public void DeleteVehicle(int id)
         {
             throw new NotImplementedException();
@@ -108,6 +109,24 @@ namespace Application.Services
             }
             return vehicleDTOs;
         }
+
+
+        public List<VehicleDTO> GetByOwnerId(int ownerId)
+        {
+            List<VehicleDTO> vehicleDTOs = new List<VehicleDTO>();
+            var vehicles = _vehicleRepository.GetByOwnerId(ownerId);
+            foreach (var vehicle in vehicles)
+            {
+                VehicleDTO vehicleDTO = VehicleDTO.Create(vehicle);
+                vehicleDTOs.Add(vehicleDTO);
+            }
+            return vehicleDTOs;
+        }
+
+
+
+
+
 
 
         public List<VehicleDTO> GetActiveVehicles()

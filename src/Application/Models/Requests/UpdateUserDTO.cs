@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Models.Requests.Clients
+namespace Application.Models.Requests
 {
-    public class UpdateClientDTO
+    public class UpdateUserDTO
     {
         public string FullName { get; set; }
 
@@ -14,11 +14,12 @@ namespace Application.Models.Requests.Clients
 
         public string PhoneNumber { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public string Location { get; set; }
 
         public string Password { get; set; }
 
         public string NewPassword { get; set; }
-
     }
 }

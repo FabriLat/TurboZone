@@ -13,6 +13,8 @@ namespace Application.Interfaces
     {
        List<VehicleDTO> GetAllVehicles();
 
+        List<VehicleDTO> GetByOwnerId(int ownerId);
+
         List<VehicleDTO> GetActiveVehicles();
 
        VehicleDTO? GetVehicleById(int id);

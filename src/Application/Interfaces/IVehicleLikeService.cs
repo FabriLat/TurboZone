@@ -15,5 +15,7 @@ namespace Application.Interfaces
         int GetTotalLikes(int vehicleId);
 
         bool IsVehicleLikedByUser(int vehicleId, int userId);
+
+
     }
 }

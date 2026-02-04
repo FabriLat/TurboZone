@@ -34,8 +34,6 @@ namespace Domain.Entities
 
         public string Location { get; set; }
 
-        public List<Notifications> Notifications { get; set; } = new List<Notifications>();
-
         [Required]
         public UserRol Rol { get; set; } = UserRol.Client;
 
